@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# real bank statements used to calibrate parsers — never commit these
+/samples/*.pdf
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
