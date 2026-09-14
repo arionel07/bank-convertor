@@ -105,5 +105,49 @@
 	},
 	"footer": {
 		"rights": "Toate drepturile rezervate"
+	},
+	"converter": {
+		"title": "Convertor extrase bancare",
+		"subtitle": "Încarcă un extras PDF, verifică tranzacțiile și exportă",
+		"dropzone": {
+			"title": "Trage extrasul PDF aici",
+			"subtitle": "sau apasă pentru a alege un fișier",
+			"hint": "Doar PDF, max 15 MB",
+			"browse": "Alege fișier"
+		},
+		"uploading": "Se încarcă…",
+		"parsing": "Se extrag tranzacțiile…",
+		"error": {
+			"invalidType": "Te rog încarcă un fișier PDF",
+			"tooLarge": "Fișierul este prea mare (max 15 MB)",
+			"unsupportedBank": "Nu am recunoscut formatul acestui extras încă",
+			"noTransactions": "Nu am găsit nicio tranzacție în acest fișier",
+			"generic": "Nu am putut procesa fișierul, încearcă din nou",
+			"limitReached": "Ai folosit extrasele gratuite din această lună"
+		},
+		"detectedBank": "Bancă recunoscută: {bank}",
+		"transactionsFound": "{count} tranzacții găsite",
+		"table": {
+			"date": "Data",
+			"description": "Descriere",
+			"amount": "Sumă",
+			"currency": "Valută",
+			"balance": "Sold",
+			"actions": "Acțiuni",
+			"deleteRow": "Șterge rândul",
+			"addRow": "Adaugă rând",
+			"empty": "Niciun rând — adaugă unul manual sau încarcă alt extras"
+		},
+		"export": {
+			"xlsx": "Export XLSX",
+			"csv": "Export CSV",
+			"onec": "Export 1C (TXT)"
+		},
+		"reset": "Convertește alt extras",
+		"upgrade": {
+			"title": "Ai atins limita gratuită",
+			"subtitle": "Planul gratuit include 2 extrase pe lună. Treci la Pro pentru extrase nelimitate.",
+			"cta": "Treci la Pro"
+		}
 	}
 }

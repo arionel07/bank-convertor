@@ -105,5 +105,49 @@
 	},
 	"footer": {
 		"rights": "All rights reserved"
+	},
+	"converter": {
+		"title": "Bank statement converter",
+		"subtitle": "Upload a PDF statement, check the transactions, and export",
+		"dropzone": {
+			"title": "Drop your PDF statement here",
+			"subtitle": "or tap to choose a file",
+			"hint": "PDF only, max 15 MB",
+			"browse": "Choose file"
+		},
+		"uploading": "Uploading…",
+		"parsing": "Extracting transactions…",
+		"error": {
+			"invalidType": "Please upload a PDF file",
+			"tooLarge": "File is too large (max 15 MB)",
+			"unsupportedBank": "We don't recognize this statement's format yet",
+			"noTransactions": "We couldn't find any transactions in this file",
+			"generic": "We couldn't process the file, please try again",
+			"limitReached": "You've used your free statements for this month"
+		},
+		"detectedBank": "Detected bank: {bank}",
+		"transactionsFound": "{count} transactions found",
+		"table": {
+			"date": "Date",
+			"description": "Description",
+			"amount": "Amount",
+			"currency": "Currency",
+			"balance": "Balance",
+			"actions": "Actions",
+			"deleteRow": "Delete row",
+			"addRow": "Add row",
+			"empty": "No rows — add one manually or upload another statement"
+		},
+		"export": {
+			"xlsx": "Export XLSX",
+			"csv": "Export CSV",
+			"onec": "Export 1C (TXT)"
+		},
+		"reset": "Convert another statement",
+		"upgrade": {
+			"title": "You've hit the free limit",
+			"subtitle": "The free plan includes 2 statements per month. Upgrade to Pro for unlimited statements.",
+			"cta": "Upgrade to Pro"
+		}
 	}
 }

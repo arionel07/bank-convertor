@@ -31,6 +31,22 @@ export default async function AppLayout({
 						<Button
 							variant="ghost"
 							size="sm"
+							render={<Link href={ROUTES.afterLogin} />}
+							className="hidden sm:inline-flex h-10"
+						>
+							{t('nav.converter')}
+						</Button>
+						<Button
+							variant="ghost"
+							size="sm"
+							render={<Link href={ROUTES.dashboard} />}
+							className="hidden sm:inline-flex h-10"
+						>
+							{t('nav.dashboard')}
+						</Button>
+						<Button
+							variant="ghost"
+							size="sm"
 							render={<Link href="/price" />}
 							className="hidden sm:inline-flex h-10"
 						>

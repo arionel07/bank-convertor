@@ -1,0 +1,48 @@
+export type Transaction = {
+	/** ISO date, yyyy-mm-dd */
+	date: string
+	description: string
+	/** Signed amount: negative = debit/outgoing, positive = credit/incoming */
+	amount: number
+	currency: string
+	balance?: number
+	counterparty?: string
+	counterpartyAccount?: string
+	documentNumber?: string
+}
+
+export interface BankParser {
+	bankCode: string
+	bankName: string
+	/** Cheap heuristic check on the extracted PDF text before running parse() */
+	match(text: string): boolean
+	parse(text: string): Transaction[]
+}
+
+export type ParsedAccount = {
+	accountNumber?: string
+	accountHolder?: string
+	bankName?: string
+	bankBic?: string
+	periodFrom?: string
+	periodTo?: string
+}
+
+export type ParseApiResponse =
+	| {
+			bankCode: string
+			bankName: string
+			account: ParsedAccount
+			transactions: Transaction[]
+	  }
+	| { error: ParseApiError }
+
+export type ParseApiError =
+	| 'no_file'
+	| 'invalid_type'
+	| 'too_large'
+	| 'unsupported_bank'
+	| 'no_transactions'
+	| 'not_implemented'
+	| 'limit_reached'
+	| 'unauthorized'
