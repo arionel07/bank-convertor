@@ -80,11 +80,22 @@ export function transactionsTo1C(
 	return lines.join('\r\n')
 }
 
-export function download1C(
+/**
+ * windows-1251 is a single-byte encoding with no browser-safe encoder
+ * available client-side (iconv-lite needs Node's Buffer), so the actual
+ * transcoding happens server-side in /api/export/onec — this just fetches
+ * the already-encoded bytes and triggers the download.
+ */
+export async function download1C(
 	transactions: Transaction[],
 	account: OneCAccountInfo,
 	filename: string
 ) {
-	const text = transactionsTo1C(transactions, account)
-	downloadBlob(new Blob([text], { type: 'text/plain;charset=utf-8' }), filename)
+	const res = await fetch('/api/export/onec', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ transactions, account })
+	})
+	if (!res.ok) throw new Error('1C export failed')
+	downloadBlob(await res.blob(), filename)
 }

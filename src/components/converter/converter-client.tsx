@@ -17,6 +17,7 @@ import type {
 import { FileWarning, RotateCcw, TriangleAlert } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type Status = 'idle' | 'uploading' | 'ready' | 'error'
 
@@ -86,6 +87,14 @@ export function ConverterClient() {
 		t('table.currency'),
 		t('table.balance')
 	]
+
+	async function withErrorToast(action: () => Promise<void> | void) {
+		try {
+			await action()
+		} catch {
+			toast.error(t('error.generic'))
+		}
+	}
 
 	if (status === 'error' && error === 'limit_reached') {
 		return (
@@ -165,7 +174,9 @@ export function ConverterClient() {
 							variant="outline"
 							className="h-11"
 							onClick={() =>
-								downloadXlsx(transactions, headers, 'statement.xlsx')
+								withErrorToast(() =>
+									downloadXlsx(transactions, headers, 'statement.xlsx')
+								)
 							}
 						>
 							{t('export.xlsx')}
@@ -173,14 +184,20 @@ export function ConverterClient() {
 						<Button
 							variant="outline"
 							className="h-11"
-							onClick={() => downloadCsv(transactions, headers, 'statement.csv')}
+							onClick={() =>
+								withErrorToast(() =>
+									downloadCsv(transactions, headers, 'statement.csv')
+								)
+							}
 						>
 							{t('export.csv')}
 						</Button>
 						<Button
 							className="h-11"
 							onClick={() =>
-								download1C(transactions, account, 'statement_1c.txt')
+								withErrorToast(() =>
+									download1C(transactions, account, 'statement_1c.txt')
+								)
 							}
 						>
 							{t('export.onec')}
