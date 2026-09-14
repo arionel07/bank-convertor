@@ -1,7 +1,7 @@
 // better Auth or next Auth.js
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import * as authSchema from '../db/auth-schema.ts'
+import * as authSchema from '../db/auth-schema'
 import { db } from './db'
 
 export const auth = betterAuth({

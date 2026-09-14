@@ -1,12 +1,12 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { useI18n } from '@/i18n/context'
 import { Moon, Sun } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
 export function ThemeToggle() {
-	const { t } = useI18n()
+	const t = useTranslations('theme')
 	const { resolvedTheme, setTheme } = useTheme()
 	const [mounted, setMounted] = useState(false)
 	useEffect(() => setMounted(true), []) // гидрация: до маунта не рендерим иконку
@@ -16,7 +16,7 @@ export function ThemeToggle() {
 			variant="ghost"
 			size="icon"
 			className="h-10 w-10"
-			aria-label={t('theme.toggle')}
+			aria-label={t('toggle')}
 			onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
 		>
 			{mounted &&

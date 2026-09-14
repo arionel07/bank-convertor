@@ -1,12 +1,22 @@
+import { routing } from '@/i18n/routing'
 import { auth } from '@/lib/auth'
 import { ROUTES } from '@/lib/routes'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 export async function GET(req: Request) {
-	const session = await auth.api.getSession({ headers: await headers() })
-	if (!session) return NextResponse.redirect(new URL(ROUTES.login, req.url))
-
 	const { searchParams } = new URL(req.url)
+	const locale = routing.locales.includes(
+		searchParams.get('locale') as (typeof routing.locales)[number]
+	)
+		? searchParams.get('locale')
+		: routing.defaultLocale
+
+	const session = await auth.api.getSession({ headers: await headers() })
+	if (!session)
+		return NextResponse.redirect(
+			new URL(`/${locale}${ROUTES.login}`, req.url)
+		)
+
 	const plan = searchParams.get('plan')
 	if (plan !== 'pro')
 		return NextResponse.json({ error: 'unknown plan' }, { status: 400 })

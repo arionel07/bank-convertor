@@ -8,15 +8,15 @@ import {
 	CardTitle
 } from '@/components/ui/card'
 import { subscriptions } from '@/db/schema'
-import { getT } from '@/i18n/server'
+import { Link } from '@/i18n/navigation'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { eq } from 'drizzle-orm'
+import { getTranslations } from 'next-intl/server'
 import { headers } from 'next/headers'
-import Link from 'next/link'
 
 export default async function DashboardPage() {
-	const { t } = await getT()
+	const t = await getTranslations()
 	const session = await auth.api.getSession({ headers: await headers() })
 	const [sub] = await db
 		.select()

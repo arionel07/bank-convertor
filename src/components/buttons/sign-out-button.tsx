@@ -1,11 +1,12 @@
 'use client'
-import { useI18n } from '@/i18n/context'
+import { useRouter } from '@/i18n/navigation'
 import { authClient } from '@/lib/auth-client'
 import { ROUTES } from '@/lib/routes'
 import { LogOut } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+
 export function SignOutButton() {
-	const { t } = useI18n()
+	const t = useTranslations()
 	const router = useRouter()
 	return (
 		<button

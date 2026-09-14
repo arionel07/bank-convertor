@@ -7,23 +7,29 @@ import {
 	CardHeader,
 	CardTitle
 } from '@/components/ui/card'
-import { getT } from '@/i18n/server'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function PricePage() {
-	const { t } = await getT()
+	const t = await getTranslations()
+	const locale = await getLocale()
 	const plans = [
 		{
 			name: t('price.free.name'),
 			price: '$0',
 			features: [t('price.free.f1'), t('price.free.f2')],
-			href: '/register'
+			href: '/register',
+			external: false
 		},
 		{
 			name: t('price.pro.name'),
 			price: '$9',
 			features: [t('price.pro.f1'), t('price.pro.f2')],
-			href: '/api/billing/checkout?plan=pro'
+			// route handler, not a localized page — must not go through the
+			// locale-prefixing <Link>; carries the locale so an unauthenticated
+			// redirect back to /login lands on the right language.
+			href: `/api/billing/checkout?plan=pro&locale=${locale}`,
+			external: true
 		}
 	]
 
@@ -59,13 +65,23 @@ export default async function PricePage() {
 							</ul>
 						</CardContent>
 						<CardFooter>
-							<Button
-								nativeButton={false}
-								render={<Link href={plan.href} />}
-								className="w-full h-11"
-							>
-								{t('price.choose')}
-							</Button>
+							{plan.external ? (
+								<Button
+									nativeButton={false}
+									render={<a href={plan.href} />}
+									className="w-full h-11"
+								>
+									{t('price.choose')}
+								</Button>
+							) : (
+								<Button
+									nativeButton={false}
+									render={<Link href={plan.href} />}
+									className="w-full h-11"
+								>
+									{t('price.choose')}
+								</Button>
+							)}
 						</CardFooter>
 					</Card>
 				))}

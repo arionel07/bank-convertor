@@ -10,14 +10,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { useI18n } from '@/i18n/context'
+import { Link, useRouter } from '@/i18n/navigation'
 import { authClient } from '@/lib/auth-client'
 import { ROUTES } from '@/lib/routes'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+
 export default function RegisterPage() {
-	const { t } = useI18n()
+	const t = useTranslations()
 	const router = useRouter()
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')

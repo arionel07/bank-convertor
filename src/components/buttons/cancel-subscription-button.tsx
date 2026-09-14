@@ -1,11 +1,11 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { useI18n } from '@/i18n/context'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 export function CancelSubscriptionButton() {
-	const { t } = useI18n()
+	const t = useTranslations()
 	const router = useRouter()
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState<string | null>(null)

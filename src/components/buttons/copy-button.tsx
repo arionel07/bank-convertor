@@ -1,9 +1,9 @@
 'use client'
-import { useI18n } from '@/i18n/context'
 import { Check, Copy } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 export function CopyButton({ value }: { value: string }) {
-	const { t } = useI18n()
+	const t = useTranslations('common')
 	const [copied, setCopied] = useState(false)
 
 	async function copy() {
@@ -23,7 +23,7 @@ export function CopyButton({ value }: { value: string }) {
 			) : (
 				<Copy size={16} />
 			)}
-			{copied ? t('common.copied') : t('common.copy')}
+			{copied ? t('copied') : t('copy')}
 		</button>
 	)
 }

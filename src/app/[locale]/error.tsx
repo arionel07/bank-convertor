@@ -7,8 +7,8 @@ import {
 	CardHeader,
 	CardTitle
 } from '@/components/ui/card'
-import { useI18n } from '@/i18n/context'
 import { TriangleAlert } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 
 export default function Error({
@@ -18,7 +18,7 @@ export default function Error({
 	error: Error & { digest?: string }
 	reset: () => void
 }) {
-	const { t } = useI18n()
+	const t = useTranslations()
 
 	useEffect(() => {
 		fetch('/api/errors', {

@@ -1,0 +1,109 @@
+{
+	"common": {
+		"appName": "bank-converter",
+		"tagline": "PDF bank statements, converted instantly to 1C",
+		"loading": "Loading…",
+		"save": "Save",
+		"cancel": "Cancel",
+		"copy": "Copy",
+		"copied": "Copied",
+		"retry": "Try again"
+	},
+	"nav": {
+		"dashboard": "Account",
+		"pricing": "Pricing",
+		"converter": "Converter",
+		"blog": "Blog",
+		"signOut": "Sign out",
+		"signIn": "Sign in"
+	},
+	"auth": {
+		"login": {
+			"title": "Sign in",
+			"submit": "Sign in",
+			"noAccount": "No account?",
+			"hasAccount": "Already have an account?"
+		},
+		"register": {
+			"title": "Create account",
+			"submit": "Create account"
+		},
+		"email": "Email",
+		"password": "Password",
+		"name": "Name",
+		"google": "Continue with Google",
+		"or": "or",
+		"error": {
+			"generic": "Something went wrong, please try again"
+		}
+	},
+	"price": {
+		"title": "Pricing",
+		"subtitle": "Start free — upgrade to Pro when you need to",
+		"perMonth": "/mo",
+		"choose": "Choose",
+		"free": {
+			"name": "Free",
+			"f1": "2 statements per month",
+			"f2": "XLSX, CSV and 1C export"
+		},
+		"pro": {
+			"name": "Pro",
+			"f1": "Unlimited statements",
+			"f2": "Priority support"
+		}
+	},
+	"billing": {
+		"cancel": "Cancel subscription",
+		"cancelConfirm": "Cancel subscription? Access remains until the end of the paid period.",
+		"cancelled": "Subscription cancelled"
+	},
+	"theme": {
+		"toggle": "Theme",
+		"light": "Light",
+		"dark": "Dark"
+	},
+	"lang": {
+		"switch": "Language",
+		"ro": "Romanian",
+		"en": "English",
+		"ru": "Russian"
+	},
+	"landing": {
+		"hero": {
+			"badge": "No install, right in your browser",
+			"title": "Turn a PDF bank statement into 1C format in seconds",
+			"subtitle": "Upload a maib statement, edit transactions if needed, and export straight to 1CClientBankExchange, XLSX or CSV.",
+			"ctaPrimary": "Convert a statement",
+			"ctaSecondary": "See pricing"
+		},
+		"features": {
+			"title": "Why bank-converter",
+			"f1": {
+				"title": "Automatic recognition",
+				"desc": "We extract dates, descriptions and amounts straight from the PDF text — no manual retyping."
+			},
+			"f2": {
+				"title": "Edit before export",
+				"desc": "Fix any cell in the preview table before generating the final file."
+			},
+			"f3": {
+				"title": "Built for 1C",
+				"desc": "A ready-to-import 1CClientBankExchange file with correct windows-1251 encoding and BOM."
+			}
+		},
+		"faq": {
+			"title": "Frequently asked questions"
+		},
+		"testimonials": {
+			"title": "Testimonials"
+		},
+		"cta": {
+			"title": "Start now",
+			"subtitle": "Free plan, no card required. Upgrade in a minute when you need to."
+		}
+	},
+	"footer": {
+		"rights": "All rights reserved"
+	}
+}

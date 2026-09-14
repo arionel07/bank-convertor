@@ -3,11 +3,11 @@ import { ThemeToggle } from '@/components/buttons/theme-toggle'
 import { MobileMenu } from '@/components/modals/mobile-menu'
 import { Button } from '@/components/ui/button'
 import { LinkButton } from '@/components/ui/link-button'
-import { getT } from '@/i18n/server'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { getTranslations } from 'next-intl/server'
 
 export async function LandingHeader() {
-	const { t } = await getT()
+	const t = await getTranslations()
 	return (
 		<header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
 			<div className="flex h-14 items-center gap-2 px-4">

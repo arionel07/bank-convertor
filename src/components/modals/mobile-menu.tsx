@@ -8,13 +8,13 @@ import {
 	SheetTitle,
 	SheetTrigger
 } from '@/components/ui/sheet'
-import { useI18n } from '@/i18n/context'
+import { Link } from '@/i18n/navigation'
 import { ROUTES } from '@/lib/routes'
 import { Menu } from 'lucide-react'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export function MobileMenu() {
-	const { t } = useI18n()
+	const t = useTranslations()
 	return (
 		<Sheet>
 			<SheetTrigger

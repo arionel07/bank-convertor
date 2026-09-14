@@ -1,8 +1,8 @@
-import { getT } from '@/i18n/server'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { getTranslations } from 'next-intl/server'
 
 export async function LandingFooter() {
-	const { t } = await getT()
+	const t = await getTranslations()
 	return (
 		<footer className="border-t py-8 px-4">
 			<div className="mx-auto max-w-5xl flex flex-col items-center gap-3 text-sm text-muted-foreground">
@@ -21,7 +21,8 @@ export async function LandingFooter() {
 					</Link>
 				</nav>
 				<p>
-					© {new Date().getFullYear()} {t('common.appName')}
+					© {new Date().getFullYear()} {t('common.appName')} —{' '}
+					{t('footer.rights')}
 				</p>
 			</div>
 		</footer>

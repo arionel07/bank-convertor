@@ -1,0 +1,109 @@
+{
+	"common": {
+		"appName": "bank-converter",
+		"tagline": "Extrase bancare PDF, convertite instant în 1C",
+		"loading": "Se încarcă…",
+		"save": "Salvează",
+		"cancel": "Anulează",
+		"copy": "Copiază",
+		"copied": "Copiat",
+		"retry": "Încearcă din nou"
+	},
+	"nav": {
+		"dashboard": "Cont",
+		"pricing": "Prețuri",
+		"converter": "Convertor",
+		"blog": "Blog",
+		"signOut": "Ieșire",
+		"signIn": "Intră în cont"
+	},
+	"auth": {
+		"login": {
+			"title": "Intră în cont",
+			"submit": "Intră în cont",
+			"noAccount": "Nu ai cont?",
+			"hasAccount": "Ai deja cont?"
+		},
+		"register": {
+			"title": "Creează cont",
+			"submit": "Creează cont"
+		},
+		"email": "Email",
+		"password": "Parolă",
+		"name": "Nume",
+		"google": "Continuă cu Google",
+		"or": "sau",
+		"error": {
+			"generic": "Ceva nu a mers bine, încearcă din nou"
+		}
+	},
+	"price": {
+		"title": "Prețuri",
+		"subtitle": "Începe gratuit — treci la Pro când ai nevoie",
+		"perMonth": "/lună",
+		"choose": "Alege",
+		"free": {
+			"name": "Gratuit",
+			"f1": "2 extrase pe lună",
+			"f2": "Export XLSX, CSV și 1C"
+		},
+		"pro": {
+			"name": "Pro",
+			"f1": "Extrase nelimitate",
+			"f2": "Suport prioritar"
+		}
+	},
+	"billing": {
+		"cancel": "Anulează abonamentul",
+		"cancelConfirm": "Anulezi abonamentul? Accesul rămâne activ până la sfârșitul perioadei plătite.",
+		"cancelled": "Abonament anulat"
+	},
+	"theme": {
+		"toggle": "Temă",
+		"light": "Luminoasă",
+		"dark": "Întunecată"
+	},
+	"lang": {
+		"switch": "Limbă",
+		"ro": "Română",
+		"en": "Engleză",
+		"ru": "Rusă"
+	},
+	"landing": {
+		"hero": {
+			"badge": "Fără instalare, direct din browser",
+			"title": "Transformă extrasul bancar PDF în format 1C în câteva secunde",
+			"subtitle": "Încarcă extrasul de cont maib, editează tranzacțiile dacă e nevoie și exportă direct în 1CClientBankExchange, XLSX sau CSV.",
+			"ctaPrimary": "Convertește un extras",
+			"ctaSecondary": "Vezi prețurile"
+		},
+		"features": {
+			"title": "De ce bank-converter",
+			"f1": {
+				"title": "Recunoaștere automată",
+				"desc": "Extragem datele, descrierile și sumele direct din textul PDF-ului, fără scanare manuală."
+			},
+			"f2": {
+				"title": "Editare înainte de export",
+				"desc": "Corectezi orice celulă din tabelul de previzualizare înainte de a genera fișierul final."
+			},
+			"f3": {
+				"title": "Export pentru 1C",
+				"desc": "Fișier 1CClientBankExchange gata de import, cu codificare windows-1251 și BOM corect."
+			}
+		},
+		"faq": {
+			"title": "Întrebări frecvente"
+		},
+		"testimonials": {
+			"title": "Recenzii"
+		},
+		"cta": {
+			"title": "Începe acum",
+			"subtitle": "Plan gratuit, fără card. Treci la Pro într-un minut, când ai nevoie."
+		}
+	},
+	"footer": {
+		"rights": "Toate drepturile rezervate"
+	}
+}

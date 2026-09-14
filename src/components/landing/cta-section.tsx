@@ -1,8 +1,8 @@
 import { LinkButton } from '@/components/ui/link-button'
-import { getT } from '@/i18n/server'
+import { getTranslations } from 'next-intl/server'
 
 export async function CtaSection() {
-	const { t } = await getT()
+	const t = await getTranslations()
 	return (
 		<section className="px-4 py-12 sm:py-20">
 			<div className="max-w-3xl mx-auto rounded-2xl border bg-muted/40 px-6 py-12 sm:py-16 text-center">

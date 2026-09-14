@@ -1,15 +1,15 @@
 'use client'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { useI18n } from '@/i18n/context'
+import { useTranslations } from 'next-intl'
 
 type Testimonial = { name: string; role: string; text: string }
 
 export function Testimonials({ items }: { items: Testimonial[] }) {
-	const { t } = useI18n()
+	const t = useTranslations('landing')
 	return (
 		<section className="px-4 py-12 sm:py-16 max-w-5xl mx-auto w-full">
 			<h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-center mb-8">
-				{t('landing.testimonials.title')}
+				{t('testimonials.title')}
 			</h2>
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 				{items.map(item => (
