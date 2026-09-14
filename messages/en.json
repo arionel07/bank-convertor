@@ -149,5 +149,10 @@
 			"subtitle": "The free plan includes 2 statements per month. Upgrade to Pro for unlimited statements.",
 			"cta": "Upgrade to Pro"
 		}
+	},
+	"usage": {
+		"title": "Statements used this month",
+		"free": "{used} of {limit} free statements used",
+		"unlimited": "Pro plan — unlimited statements"
 	}
 }

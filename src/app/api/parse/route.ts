@@ -1,7 +1,8 @@
-import { extractPdfText } from '@/lib/pdf/extract-text'
-import { findParser } from '@/lib/parsers'
 import { auth } from '@/lib/auth'
+import { findParser } from '@/lib/parsers'
 import type { ParseApiResponse } from '@/lib/parsers/types'
+import { extractPdfText } from '@/lib/pdf/extract-text'
+import { canConvert, recordUsage } from '@/lib/usage'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -13,6 +14,13 @@ export async function POST(req: Request) {
 		return NextResponse.json<ParseApiResponse>(
 			{ error: 'unauthorized' },
 			{ status: 401 }
+		)
+	}
+
+	if (!(await canConvert(session.user.id))) {
+		return NextResponse.json<ParseApiResponse>(
+			{ error: 'limit_reached' },
+			{ status: 402 }
 		)
 	}
 
@@ -54,6 +62,8 @@ export async function POST(req: Request) {
 			{ status: 422 }
 		)
 	}
+
+	await recordUsage(session.user.id, parser.bankCode)
 
 	return NextResponse.json<ParseApiResponse>({
 		bankCode: parser.bankCode,

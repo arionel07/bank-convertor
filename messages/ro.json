@@ -149,5 +149,10 @@
 			"subtitle": "Planul gratuit include 2 extrase pe lună. Treci la Pro pentru extrase nelimitate.",
 			"cta": "Treci la Pro"
 		}
+	},
+	"usage": {
+		"title": "Extrase folosite luna aceasta",
+		"free": "{used} din {limit} extrase gratuite folosite",
+		"unlimited": "Plan Pro — extrase nelimitate"
 	}
 }

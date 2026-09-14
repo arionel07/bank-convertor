@@ -63,3 +63,15 @@ export const subscriptions = pgTable('subscriptions', {
 	renewsAt: timestamp('renews_at'),
 	endsAt: timestamp('ends_at')
 })
+
+// Один ряд = одна успешно распознанная выписка. Месячный лимит бесплатного
+// тарифа считается как count(*) по userId за текущий календарный месяц —
+// см. src/lib/usage.ts.
+export const usage = pgTable('usage', {
+	id: uuid('id').primaryKey().defaultRandom(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	bankCode: text('bank_code').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow()
+})
