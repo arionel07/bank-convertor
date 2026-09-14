@@ -22,11 +22,18 @@ export function transactionsToCsv(
 		.join('\r\n')
 }
 
+// Excel only auto-detects UTF-8 (rather than the system codepage) for a
+// CSV that starts with a byte-order mark.
+const UTF8_BOM = String.fromCharCode(0xfeff)
+
 export function downloadCsv(
 	transactions: Transaction[],
 	headers: string[],
 	filename: string
 ) {
 	const csv = transactionsToCsv(transactions, headers)
-	downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), filename)
+	downloadBlob(
+		new Blob([UTF8_BOM + csv], { type: 'text/csv;charset=utf-8' }),
+		filename
+	)
 }

@@ -17,10 +17,12 @@ export async function transactionsToXlsxBuffer(
 		{ header: headers[4], key: 'balance', width: 14 }
 	]
 	sheet.getRow(1).font = { bold: true }
+	sheet.views = [{ state: 'frozen', ySplit: 1 }]
+	sheet.autoFilter = { from: 'A1', to: 'E1' }
 
 	for (const t of transactions) {
 		sheet.addRow({
-			date: t.date,
+			date: new Date(t.date),
 			description: t.description,
 			amount: t.amount,
 			currency: t.currency,
@@ -28,6 +30,7 @@ export async function transactionsToXlsxBuffer(
 		})
 	}
 
+	sheet.getColumn('date').numFmt = 'dd.mm.yyyy'
 	sheet.getColumn('amount').numFmt = '#,##0.00'
 	sheet.getColumn('balance').numFmt = '#,##0.00'
 
