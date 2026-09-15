@@ -1,4 +1,5 @@
 'use client'
+import { SignOutButton } from '@/components/buttons/sign-out-button'
 import { Button } from '@/components/ui/button'
 import { LinkButton } from '@/components/ui/link-button'
 import {
@@ -13,7 +14,7 @@ import { ROUTES } from '@/lib/routes'
 import { Menu } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-export function MobileMenu() {
+export function MobileMenu({ isSignedIn }: { isSignedIn: boolean }) {
 	const t = useTranslations()
 	return (
 		<Sheet>
@@ -29,22 +30,40 @@ export function MobileMenu() {
 					<SheetTitle>{t('common.appName')}</SheetTitle>
 				</SheetHeader>
 				<nav className="grid gap-2 mt-6">
+					<Link href="/converter" className="text-lg py-2">
+						{t('nav.converter')}
+					</Link>
 					<Link href="/blog" className="text-lg py-2">
 						{t('nav.blog')}
 					</Link>
 					<Link href="/price" className="text-lg py-2">
 						{t('nav.pricing')}
 					</Link>
-					<LinkButton
-						href="/login"
-						variant="outline"
-						className="w-full h-11 mt-4"
-					>
-						{t('nav.signIn')}
-					</LinkButton>
-					<LinkButton href={ROUTES.register} className="w-full h-11">
-						{t('auth.register.title')}
-					</LinkButton>
+					{isSignedIn ? (
+						<>
+							<Link href={ROUTES.dashboard} className="text-lg py-2">
+								{t('nav.dashboard')}
+							</Link>
+							<SignOutButton
+								compact={false}
+								variant="outline"
+								className="w-full h-11 mt-4"
+							/>
+						</>
+					) : (
+						<>
+							<LinkButton
+								href="/login"
+								variant="outline"
+								className="w-full h-11 mt-4"
+							>
+								{t('nav.signIn')}
+							</LinkButton>
+							<LinkButton href={ROUTES.register} className="w-full h-11">
+								{t('auth.register.title')}
+							</LinkButton>
+						</>
+					)}
 				</nav>
 			</SheetContent>
 		</Sheet>

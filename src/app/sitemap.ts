@@ -18,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			alternates: { languages: localeAlternates('') }
 		})
 		entries.push({
+			url: localizedUrl(locale, '/converter'),
+			changeFrequency: 'weekly',
+			priority: 0.9,
+			alternates: { languages: localeAlternates('/converter') }
+		})
+		entries.push({
 			url: localizedUrl(locale, '/price'),
 			changeFrequency: 'monthly',
 			priority: 0.8,

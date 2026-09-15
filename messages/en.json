@@ -150,6 +150,11 @@
 		},
 		"warning": {
 			"genericFallback": "We didn't recognize the bank automatically — generic extraction was used. Double-check amounts and descriptions before exporting."
+		},
+		"anonLimit": {
+			"title": "You've used your free no-account conversion",
+			"subtitle": "Create a free account for 2 more statements per month, or go straight to Pro for unlimited statements.",
+			"cta": "Create a free account"
 		}
 	},
 	"usage": {

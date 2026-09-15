@@ -150,6 +150,11 @@
 			"title": "Ai atins limita gratuită",
 			"subtitle": "Planul gratuit include 2 extrase pe lună. Treci la Pro pentru extrase nelimitate.",
 			"cta": "Treci la Pro"
+		},
+		"anonLimit": {
+			"title": "Ai folosit conversia gratuită fără cont",
+			"subtitle": "Creează un cont gratuit pentru încă 2 extrase pe lună, sau treci direct la Pro pentru extrase nelimitate.",
+			"cta": "Creează cont gratuit"
 		}
 	},
 	"usage": {

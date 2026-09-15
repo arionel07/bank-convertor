@@ -1,16 +1,13 @@
-import { auth } from '@/lib/auth'
 import { encode1CBytes } from '@/lib/export/onec-encoding'
 import { type OneCAccountInfo, transactionsTo1C } from '@/lib/export/onec'
 import type { Transaction } from '@/lib/parsers/types'
-import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
+// No auth check: this is a stateless text transform over data the caller
+// already holds client-side (their own edited preview table) — it makes
+// no DB writes and consumes no quota, so anonymous conversions (see
+// src/lib/anon-usage.ts) can export too.
 export async function POST(req: Request) {
-	const session = await auth.api.getSession({ headers: await headers() })
-	if (!session) {
-		return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-	}
-
 	const body = (await req.json()) as {
 		transactions: Transaction[]
 		account?: OneCAccountInfo

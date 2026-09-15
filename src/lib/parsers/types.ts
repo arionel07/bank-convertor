@@ -46,5 +46,7 @@ export type ParseApiError =
 	| 'too_large'
 	| 'no_transactions'
 	| 'not_implemented'
+	/** Logged-in free user used their FREE_MONTHLY_LIMIT statements this month. */
 	| 'limit_reached'
-	| 'unauthorized'
+	/** Anonymous visitor already used their one no-account conversion. */
+	| 'anon_limit_reached'

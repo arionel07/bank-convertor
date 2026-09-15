@@ -28,7 +28,7 @@ const ERROR_MESSAGE_KEY: Record<ParseApiError, string> = {
 	no_transactions: 'noTransactions',
 	not_implemented: 'generic',
 	limit_reached: 'limitReached',
-	unauthorized: 'generic'
+	anon_limit_reached: 'limitReached'
 }
 
 export function ConverterClient() {
@@ -113,6 +113,29 @@ export function ConverterClient() {
 						className="h-11"
 					>
 						{t('upgrade.cta')}
+					</Button>
+				</CardContent>
+			</Card>
+		)
+	}
+
+	if (status === 'error' && error === 'anon_limit_reached') {
+		return (
+			<Card className="max-w-lg mx-auto shadow-lg">
+				<CardContent className="pt-6 text-center grid gap-4">
+					<FileWarning className="mx-auto text-primary" size={32} />
+					<div>
+						<h2 className="text-xl font-semibold">{t('anonLimit.title')}</h2>
+						<p className="text-muted-foreground mt-1">
+							{t('anonLimit.subtitle')}
+						</p>
+					</div>
+					<Button
+						nativeButton={false}
+						render={<Link href="/register" />}
+						className="h-11"
+					>
+						{t('anonLimit.cta')}
 					</Button>
 				</CardContent>
 			</Card>

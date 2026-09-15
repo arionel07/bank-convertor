@@ -1,3 +1,7 @@
+import {
+	hasUsedAnonymousConversion,
+	markAnonymousConversionUsed
+} from '@/lib/anon-usage'
 import { auth } from '@/lib/auth'
 import { findParserWithFallback } from '@/lib/parsers'
 import type { ParseApiResponse } from '@/lib/parsers/types'
@@ -10,16 +14,19 @@ const MAX_SIZE = 15 * 1024 * 1024 // 15 MB
 
 export async function POST(req: Request) {
 	const session = await auth.api.getSession({ headers: await headers() })
-	if (!session) {
-		return NextResponse.json<ParseApiResponse>(
-			{ error: 'unauthorized' },
-			{ status: 401 }
-		)
-	}
 
-	if (!(await canConvert(session.user.id))) {
+	// No file is ever stored server-side either way — extraction happens
+	// entirely in memory for the duration of this request.
+	if (session) {
+		if (!(await canConvert(session.user.id))) {
+			return NextResponse.json<ParseApiResponse>(
+				{ error: 'limit_reached' },
+				{ status: 402 }
+			)
+		}
+	} else if (await hasUsedAnonymousConversion()) {
 		return NextResponse.json<ParseApiResponse>(
-			{ error: 'limit_reached' },
+			{ error: 'anon_limit_reached' },
 			{ status: 402 }
 		)
 	}
@@ -57,7 +64,11 @@ export async function POST(req: Request) {
 		)
 	}
 
-	await recordUsage(session.user.id, parser.bankCode)
+	if (session) {
+		await recordUsage(session.user.id, parser.bankCode)
+	} else {
+		await markAnonymousConversionUsed()
+	}
 
 	return NextResponse.json<ParseApiResponse>({
 		bankCode: parser.bankCode,

@@ -6,9 +6,10 @@ export default function robots(): MetadataRoute.Robots {
 		rules: {
 			userAgent: '*',
 			allow: '/',
-			// converter/dashboard are already `noindex` via metadata (see
-			// (app)/layout.tsx) — kept out of crawl too, across every locale.
-			disallow: ['/api/', '/*/converter', '/*/dashboard']
+			// converter is public now (works without an account) and is the
+			// product's main SEO target — only dashboard (account/billing)
+			// stays out, it's already `noindex` via metadata too.
+			disallow: ['/api/', '/*/dashboard']
 		},
 		sitemap: `${SITE_URL}/sitemap.xml`
 	}
