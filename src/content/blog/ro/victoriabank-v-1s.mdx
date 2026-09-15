@@ -1,0 +1,68 @@
+---
+title: "Cum să imporți extrasul Victoriabank în 1C"
+description: "Ghid pas cu pas: transformă un extras de cont PDF de la Victoriabank într-un fișier 1CClientBankExchange gata de import în 1C, fără reintroducere manuală."
+date: "2026-09-15"
+---
+
+Dacă firma ta are cont la **Victoriabank** și ții contabilitatea în 1C,
+probabil te lovești lunar de aceeași problemă: extrasul de cont vine ca
+PDF, iar 1C nu-l poate citi direct — tranzacțiile trebuie reintroduse
+manual, rând cu rând, în jurnalul documentelor bancare.
+
+**bank-converter** rezolvă exact acest pas: încarci PDF-ul de la
+Victoriabank, verifici tranzacțiile într-un tabel editabil, și exporți
+direct în formatul pe care 1C îl înțelege nativ — **1CClientBankExchange**.
+
+## Ce îți trebuie
+
+- Extrasul de cont Victoriabank în format PDF, descărcat din internet
+  banking
+- Un cont gratuit pe bank-converter (2 extrase pe lună incluse, sau
+  1 conversie fără cont deloc)
+- Acces la baza de date 1C în care ții evidența plăților
+
+## Pasul 1 — Descarcă extrasul din Victoriabank internet banking
+
+Din contul tău Victoriabank internet banking (sau VB24), mergi la secțiunea
+de extrase de cont și descarcă perioada dorită în format **PDF**.
+bank-converter citește textul direct din PDF — nu ai nevoie de un export
+special sau de o scanare.
+
+## Pasul 2 — Încarcă PDF-ul în bank-converter
+
+Intră în [convertor](/converter) și trage fișierul PDF în zona de încărcare
+(sau apasă pentru a-l alege manual). Nici nu ai nevoie de cont pentru prima
+încercare — poți testa cu o conversie gratuită înainte să te înregistrezi.
+Aplicația extrage automat data, descrierea și suma fiecărei tranzacții.
+
+## Pasul 3 — Verifică și corectează tranzacțiile
+
+Recunoașterea automată e rapidă, dar merită o verificare — mai ales dacă
+extrasul conține tranzacții cu descrieri neobișnuite. Tabelul de
+previzualizare este complet editabil: poți corecta orice celulă (dată,
+descriere, sumă, valută) direct în pagină, înainte de export.
+
+## Pasul 4 — Exportă ca 1C (TXT)
+
+Apasă butonul **Export 1C (TXT)**. Fișierul rezultat respectă formatul
+1CClientBankExchange versiunea 1.02, cu secțiuni `СекцияДокумент=Платежное
+поручение` pentru fiecare tranzacție și codificare **windows-1251** — exact
+ce așteaptă 1C la import.
+
+## Pasul 5 — Importă fișierul în 1C
+
+În 1C, deschide jurnalul documentelor bancare și folosește funcția
+**„Загрузить” / „Încarcă din fișier de schimb”**, apoi selectează fișierul
+TXT descărcat. Documentele de plată vor apărea automat, cu sumele și
+descrierile deja completate.
+
+## Limite și upgrade
+
+Fără cont ai o conversie gratuită, ca să testezi rapid. Cu un cont gratuit
+primești **2 extrase pe lună** — pentru volum mai mare, planul **Pro**
+elimină limita. Vezi [prețurile](/price).
+
+---
+
+Vrei să încerci acum? [Convertește primul tău extras Victoriabank](/converter) —
+durează sub un minut.
