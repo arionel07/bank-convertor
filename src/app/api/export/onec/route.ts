@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth'
+import { encode1CBytes } from '@/lib/export/onec-encoding'
 import { type OneCAccountInfo, transactionsTo1C } from '@/lib/export/onec'
 import type { Transaction } from '@/lib/parsers/types'
-import iconv from 'iconv-lite'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -20,12 +20,9 @@ export async function POST(req: Request) {
 	}
 
 	const text = transactionsTo1C(body.transactions, body.account ?? {})
-	// 1CClientBankExchange files are single-byte windows-1251 — no BOM: the
-	// file's first bytes must be the literal "1CClientBankExchange" ASCII
-	// signature, which a UTF byte-order mark would corrupt.
-	const bytes = new Uint8Array(iconv.encode(text, 'win1251'))
+	const bytes = encode1CBytes(text)
 
-	return new NextResponse(bytes, {
+	return new NextResponse(new Uint8Array(bytes), {
 		headers: {
 			'Content-Type': 'text/plain; charset=windows-1251',
 			'Content-Disposition': 'attachment; filename="statement_1c.txt"'

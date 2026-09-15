@@ -1,5 +1,5 @@
 import { auth } from '@/lib/auth'
-import { findParser } from '@/lib/parsers'
+import { findParserWithFallback } from '@/lib/parsers'
 import type { ParseApiResponse } from '@/lib/parsers/types'
 import { extractPdfText } from '@/lib/pdf/extract-text'
 import { canConvert, recordUsage } from '@/lib/usage'
@@ -47,13 +47,7 @@ export async function POST(req: Request) {
 	}
 
 	const text = await extractPdfText(await file.arrayBuffer())
-	const parser = findParser(text)
-	if (!parser) {
-		return NextResponse.json<ParseApiResponse>(
-			{ error: 'unsupported_bank' },
-			{ status: 422 }
-		)
-	}
+	const { parser, isFallback } = findParserWithFallback(text)
 
 	const transactions = parser.parse(text)
 	if (transactions.length === 0) {
@@ -69,6 +63,7 @@ export async function POST(req: Request) {
 		bankCode: parser.bankCode,
 		bankName: parser.bankName,
 		account: {},
-		transactions
+		transactions,
+		...(isFallback ? { warning: 'generic_fallback' as const } : {})
 	})
 }

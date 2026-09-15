@@ -28,12 +28,15 @@ export type ParsedAccount = {
 	periodTo?: string
 }
 
+export type ParseWarning = 'generic_fallback'
+
 export type ParseApiResponse =
 	| {
 			bankCode: string
 			bankName: string
 			account: ParsedAccount
 			transactions: Transaction[]
+			warning?: ParseWarning
 	  }
 	| { error: ParseApiError }
 
@@ -41,7 +44,6 @@ export type ParseApiError =
 	| 'no_file'
 	| 'invalid_type'
 	| 'too_large'
-	| 'unsupported_bank'
 	| 'no_transactions'
 	| 'not_implemented'
 	| 'limit_reached'

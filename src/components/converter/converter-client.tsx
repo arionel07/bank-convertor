@@ -25,7 +25,6 @@ const ERROR_MESSAGE_KEY: Record<ParseApiError, string> = {
 	no_file: 'generic',
 	invalid_type: 'invalidType',
 	too_large: 'tooLarge',
-	unsupported_bank: 'unsupportedBank',
 	no_transactions: 'noTransactions',
 	not_implemented: 'generic',
 	limit_reached: 'limitReached',
@@ -39,6 +38,7 @@ export function ConverterClient() {
 	const [bankName, setBankName] = useState<string | null>(null)
 	const [account, setAccount] = useState<ParsedAccount>({})
 	const [transactions, setTransactions] = useState<Transaction[]>([])
+	const [fallbackWarning, setFallbackWarning] = useState(false)
 
 	async function handleFile(file: File) {
 		if (file.type !== 'application/pdf') {
@@ -65,6 +65,7 @@ export function ConverterClient() {
 			setBankName(data.bankName)
 			setAccount(data.account)
 			setTransactions(data.transactions)
+			setFallbackWarning(data.warning === 'generic_fallback')
 			setStatus('ready')
 		} catch {
 			setStatus('error')
@@ -78,6 +79,7 @@ export function ConverterClient() {
 		setBankName(null)
 		setAccount({})
 		setTransactions([])
+		setFallbackWarning(false)
 	}
 
 	const headers = [
@@ -159,6 +161,16 @@ export function ConverterClient() {
 							{t('reset')}
 						</Button>
 					</div>
+
+					{fallbackWarning && (
+						<div
+							role="status"
+							className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-400"
+						>
+							<TriangleAlert size={18} className="shrink-0 mt-0.5" />
+							{t('warning.genericFallback')}
+						</div>
+					)}
 
 					<Card className="shadow-lg">
 						<CardContent className="p-0 sm:p-2">

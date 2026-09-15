@@ -120,7 +120,6 @@
 		"error": {
 			"invalidType": "Please upload a PDF file",
 			"tooLarge": "File is too large (max 15 MB)",
-			"unsupportedBank": "We don't recognize this statement's format yet",
 			"noTransactions": "We couldn't find any transactions in this file",
 			"generic": "We couldn't process the file, please try again",
 			"limitReached": "You've used your free statements for this month"
@@ -148,6 +147,9 @@
 			"title": "You've hit the free limit",
 			"subtitle": "The free plan includes 2 statements per month. Upgrade to Pro for unlimited statements.",
 			"cta": "Upgrade to Pro"
+		},
+		"warning": {
+			"genericFallback": "We didn't recognize the bank automatically — generic extraction was used. Double-check amounts and descriptions before exporting."
 		}
 	},
 	"usage": {

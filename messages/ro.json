@@ -120,10 +120,12 @@
 		"error": {
 			"invalidType": "Te rog încarcă un fișier PDF",
 			"tooLarge": "Fișierul este prea mare (max 15 MB)",
-			"unsupportedBank": "Nu am recunoscut formatul acestui extras încă",
 			"noTransactions": "Nu am găsit nicio tranzacție în acest fișier",
 			"generic": "Nu am putut procesa fișierul, încearcă din nou",
 			"limitReached": "Ai folosit extrasele gratuite din această lună"
+		},
+		"warning": {
+			"genericFallback": "Nu am recunoscut banca automat — am folosit extragerea generică. Verifică cu atenție sumele și descrierile înainte de export."
 		},
 		"detectedBank": "Bancă recunoscută: {bank}",
 		"transactionsFound": "{count} tranzacții găsite",
