@@ -21,18 +21,25 @@ export async function LandingHeader() {
 
 	return (
 		<header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
-			<div className="flex h-14 items-center gap-2 px-4">
-				<Link href="/" className="font-semibold text-lg">
-					{t('common.appName')}
-				</Link>
+			<div className="flex h-14 items-center px-4">
+				{/* левая треть: лого. flex-1 делает эту и правую зону равными по
+				    ширине, поэтому центральный nav оказывается реально по центру
+				    шапки, а не просто "между" лого и действиями */}
+				<div className="flex-1 flex items-center">
+					<Link href="/" className="font-semibold text-lg whitespace-nowrap">
+						{t('common.appName')}
+					</Link>
+				</div>
 
-				{/* мобилка: только burger */}
-				<div className="ml-auto sm:hidden">
+				{/* до lg (1024px) — вся эта шапка (лого + центр-nav + действия)
+				    физически не помещается в одну строку без наложений, так
+				    что до этой ширины просто гамбургер */}
+				<div className="lg:hidden">
 					<MobileMenu isSignedIn={isSignedIn} />
 				</div>
 
-				{/* десктоп/планшет: всё как было */}
-				<nav className="ml-auto hidden sm:flex items-center gap-1">
+				{/* десктоп: ссылки по центру, своей естественной ширины */}
+				<nav className="hidden lg:flex items-center gap-1 shrink-0">
 					<LinkButton href="/converter" variant="ghost" className="h-10">
 						{t('nav.converter')}
 					</LinkButton>
@@ -42,6 +49,10 @@ export async function LandingHeader() {
 					<LinkButton href="/price" variant="ghost" className="h-10">
 						{t('nav.pricing')}
 					</LinkButton>
+				</nav>
+
+				{/* правая треть: язык/тема/аккаунт, прижаты к правому краю зоны */}
+				<div className="flex-1 hidden lg:flex items-center justify-end gap-1">
 					<LanguageSwitcher />
 					<ThemeToggle />
 					{isSignedIn ? (
@@ -69,7 +80,7 @@ export async function LandingHeader() {
 							</LinkButton>
 						</>
 					)}
-				</nav>
+				</div>
 			</div>
 		</header>
 	)

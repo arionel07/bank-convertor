@@ -20,7 +20,7 @@ export function MobileMenu({ isSignedIn }: { isSignedIn: boolean }) {
 		<Sheet>
 			<SheetTrigger
 				render={
-					<Button variant="ghost" size="icon" className="h-10 w-10 sm:hidden" />
+					<Button variant="ghost" size="icon" className="h-10 w-10 lg:hidden" />
 				}
 			>
 				<Menu size={20} />
