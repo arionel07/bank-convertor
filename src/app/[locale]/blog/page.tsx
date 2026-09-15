@@ -14,8 +14,17 @@ export async function generateMetadata({
 	params: Promise<{ locale: string }>
 }): Promise<Metadata> {
 	const { locale } = await params
-	const t = await getTranslations({ locale, namespace: 'blog' })
-	return pageMetadata({ title: t('title'), description: t('subtitle'), path: '/blog' })
+	const [t, common] = await Promise.all([
+		getTranslations({ locale, namespace: 'blog' }),
+		getTranslations({ locale, namespace: 'common' })
+	])
+	return pageMetadata({
+		locale: locale as AppLocale,
+		title: t('title'),
+		description: t('subtitle'),
+		path: '/blog',
+		siteName: common('appName')
+	})
 }
 
 export default async function BlogIndexPage({

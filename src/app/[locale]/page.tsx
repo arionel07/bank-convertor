@@ -2,15 +2,36 @@ import { CtaSection } from '@/components/landing/cta-section'
 import { LandingFooter } from '@/components/landing/LandingFooter'
 import { LandingHeader } from '@/components/landing/LandingHeader'
 import { LinkButton } from '@/components/ui/link-button'
-import { FileText, PenLine, Upload } from 'lucide-react'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { AppLocale } from '@/i18n/routing'
+import { pageMetadata } from '@/lib/seo'
+import { FileText, PenLine, Upload } from 'lucide-react'
+import type { Metadata } from 'next'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 const FEATURES = [
 	{ icon: Upload, key: 'f1' as const },
 	{ icon: PenLine, key: 'f2' as const },
 	{ icon: FileText, key: 'f3' as const }
 ]
+
+export async function generateMetadata({
+	params
+}: {
+	params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+	const { locale } = await params
+	const [common, landing] = await Promise.all([
+		getTranslations({ locale, namespace: 'common' }),
+		getTranslations({ locale, namespace: 'landing' })
+	])
+	return pageMetadata({
+		locale: locale as AppLocale,
+		title: common('appName'),
+		description: landing('hero.subtitle'),
+		path: '/',
+		siteName: common('appName')
+	})
+}
 
 export default async function Home({
 	params

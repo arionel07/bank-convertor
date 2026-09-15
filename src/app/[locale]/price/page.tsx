@@ -8,7 +8,29 @@ import {
 	CardTitle
 } from '@/components/ui/card'
 import { Link } from '@/i18n/navigation'
+import type { AppLocale } from '@/i18n/routing'
+import { pageMetadata } from '@/lib/seo'
+import type { Metadata } from 'next'
 import { getLocale, getTranslations } from 'next-intl/server'
+
+export async function generateMetadata({
+	params
+}: {
+	params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+	const { locale } = await params
+	const [common, price] = await Promise.all([
+		getTranslations({ locale, namespace: 'common' }),
+		getTranslations({ locale, namespace: 'price' })
+	])
+	return pageMetadata({
+		locale: locale as AppLocale,
+		title: price('title'),
+		description: price('subtitle'),
+		path: '/price',
+		siteName: common('appName')
+	})
+}
 
 export default async function PricePage() {
 	const t = await getTranslations()

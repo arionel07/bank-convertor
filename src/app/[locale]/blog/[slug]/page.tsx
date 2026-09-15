@@ -25,10 +25,17 @@ export async function generateMetadata({
 	const { locale, slug } = await params
 	const meta = getPostMeta(locale as AppLocale, slug)
 	if (!meta) return {}
+	const common = await getTranslations({ locale, namespace: 'common' })
+	// Only advertise hreflang alternates for locales this specific post is
+	// actually published in — not every article needs all three languages.
+	const publishedIn = routing.locales.filter(l => getPostMeta(l, slug))
 	return pageMetadata({
+		locale: locale as AppLocale,
 		title: meta.title,
 		description: meta.description,
-		path: `/blog/${slug}`
+		path: `/blog/${slug}`,
+		siteName: common('appName'),
+		locales: publishedIn
 	})
 }
 
