@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { findParser, findParserWithFallback } from './index'
+import { PARSERS, findParser, findParserWithFallback } from './index'
 
 const MAIB_TEXT = 'B.C. "Moldova Agroindbank" S.A.\n01.03.2026 Test 10,00 100,00'
+
+const HEADER_BY_BANK_CODE: Record<string, string> = {
+	maib: 'B.C. "Moldova Agroindbank" S.A.',
+	victoriabank: 'Victoriabank',
+	moldindconbank: 'B.C. "Moldindconbank" S.A.',
+	sberbank: 'ПАО Сбербанк',
+	tbank: 'АО "Т-Банк"',
+	vtb: 'Банк ВТБ (ПАО)'
+}
 
 describe('findParser', () => {
 	it('returns the matching bank parser', () => {
@@ -10,6 +19,22 @@ describe('findParser', () => {
 
 	it('returns null for a layout no registered parser recognizes', () => {
 		expect(findParser('Some Unknown Bank Ltd. statement')).toBeNull()
+	})
+
+	it('routes every registered bank to itself, and to no one else', () => {
+		expect(Object.keys(HEADER_BY_BANK_CODE).sort()).toEqual(
+			PARSERS.map(p => p.bankCode).sort()
+		)
+
+		for (const parser of PARSERS) {
+			const header = HEADER_BY_BANK_CODE[parser.bankCode]
+			expect(findParser(header)?.bankCode).toBe(parser.bankCode)
+
+			for (const other of PARSERS) {
+				if (other.bankCode === parser.bankCode) continue
+				expect(other.match(header)).toBe(false)
+			}
+		}
 	})
 })
 
