@@ -25,6 +25,13 @@ export async function LandingHeader() {
 					<Button
 						variant="ghost"
 						className="h-10"
+						render={<Link href="/blog" />}
+					>
+						{t('nav.blog')}
+					</Button>
+					<Button
+						variant="ghost"
+						className="h-10"
 						render={<Link href="/price" />}
 					>
 						{t('nav.pricing')}

@@ -154,5 +154,12 @@
 		"title": "Statements used this month",
 		"free": "{used} of {limit} free statements used",
 		"unlimited": "Pro plan — unlimited statements"
+	},
+	"blog": {
+		"title": "Blog",
+		"subtitle": "Guides on bank statements, 1C, and bookkeeping",
+		"readMore": "Read the article",
+		"backToBlog": "Back to blog",
+		"empty": "No articles in this language yet"
 	}
 }

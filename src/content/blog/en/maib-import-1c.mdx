@@ -1,0 +1,74 @@
+---
+title: "How to import a maib statement into 1C"
+description: "Step-by-step guide: turn a PDF bank statement from maib into a 1CClientBankExchange file ready to import into 1C, no manual re-entry required."
+date: "2026-09-14"
+---
+
+If you keep your books in 1C and get a monthly account statement from
+**Moldova Agroindbank (maib)** as a PDF, you know the problem: the data can't
+be imported directly — it has to be typed in by hand, row by row, into the
+bank documents journal. For a statement with dozens of transactions, that
+means hours of work and the risk of a typo in an amount.
+
+**bank-converter** solves exactly that step: upload the PDF, check the
+transactions in an editable table, and export straight into the format 1C
+understands natively — **1CClientBankExchange**.
+
+## What you'll need
+
+- The account statement as a PDF, downloaded from maib internet banking
+- A free bank-converter account (2 statements per month included)
+- Access to the 1C database where you track payments
+
+## Step 1 — Download the statement from maib internet banking
+
+From your maib internet banking account, go to the statements section and
+download the period you need as a **PDF**. bank-converter reads the text
+straight out of the PDF — no special export or scanning required.
+
+## Step 2 — Upload the PDF to bank-converter
+
+Open the [converter](/converter) and drop the PDF file into the upload area
+(or tap to pick it manually). Within seconds, the app automatically extracts
+each transaction's date, description, and amount.
+
+## Step 3 — Check and fix the transactions
+
+Automatic recognition is fast, but it's worth a check — especially if the
+statement has unusually formatted entries. The preview table is fully
+editable: you can fix any cell (date, description, amount, currency) right
+on the page before exporting.
+
+## Step 4 — Export as 1C (TXT)
+
+Click **Export 1C (TXT)**. The resulting file follows the
+1CClientBankExchange 1.02 format, with a `СекцияДокумент=Платежное
+поручение` section for every transaction and **windows-1251** encoding —
+exactly what 1C expects on import.
+
+## Step 5 — Import the file into 1C
+
+In 1C, open the bank documents journal and use the **"Загрузить" / "Load
+from exchange file"** function, then pick the downloaded TXT file. The
+payment documents show up automatically, amounts and descriptions already
+filled in — all that's left is to confirm and post them to the right
+accounts.
+
+## Why not just export XLSX or CSV?
+
+We do offer those too — bank-converter actually exports all three formats:
+**XLSX** (via exceljs, with formatted columns and amounts as real numbers),
+**CSV** (with a BOM, so Excel picks up diacritics correctly), and **1C
+TXT**. The difference is that the 1C file is ready to import straight into
+your accounting software, with no intermediate conversion step.
+
+## Limits and upgrading
+
+The free plan includes **2 statements per month**. If you process statements
+for several companies or accounts, the **Pro** plan removes the limit — see
+[pricing](/price).
+
+---
+
+Ready to try it? [Convert your first maib statement](/converter) — it takes
+under a minute.

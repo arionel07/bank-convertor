@@ -1,0 +1,74 @@
+---
+title: "Cum să imporți extrasul maib în 1C"
+description: "Ghid pas cu pas: transformă un extras de cont PDF de la maib într-un fișier 1CClientBankExchange gata de import în 1C, fără reintroducere manuală."
+date: "2026-09-14"
+---
+
+Dacă ții contabilitatea în 1C și primești lunar extrasul de cont de la
+**Moldova Agroindbank (maib)** în format PDF, probabil recunoști problema:
+datele nu pot fi importate direct — trebuie reintroduse manual, rând cu rând,
+în jurnalul documentelor bancare. Pentru un extras cu zeci de tranzacții,
+asta înseamnă ore pierdute și riscul unei greșeli de tastare la o sumă.
+
+**bank-converter** rezolvă exact acest pas: încarci PDF-ul, verifici
+tranzacțiile într-un tabel editabil, și exporți direct în formatul pe care
+1C îl înțelege nativ — **1CClientBankExchange**.
+
+## Ce îți trebuie
+
+- Extrasul de cont în format PDF, descărcat din internet banking-ul maib
+- Un cont gratuit pe bank-converter (2 extrase pe lună incluse)
+- Acces la baza de date 1C în care ții evidența plăților
+
+## Pasul 1 — Descarcă extrasul din maib internet banking
+
+Din contul tău maib internet banking, mergi la secțiunea de extrase de cont
+și descarcă perioada dorită în format **PDF**. bank-converter citește textul
+direct din PDF — nu ai nevoie de un export special sau de o scanare.
+
+## Pasul 2 — Încarcă PDF-ul în bank-converter
+
+Intră în [convertor](/converter) și trage fișierul PDF în zona de încărcare
+(sau apasă pentru a-l alege manual). În câteva secunde, aplicația extrage
+automat data, descrierea și suma fiecărei tranzacții.
+
+## Pasul 3 — Verifică și corectează tranzacțiile
+
+Recunoașterea automată e rapidă, dar merită o verificare — mai ales dacă
+extrasul conține tranzacții cu descrieri neobișnuite. Tabelul de previzualizare
+este complet editabil: poți corecta orice celulă (dată, descriere, sumă,
+valută) direct în pagină, înainte de export.
+
+## Pasul 4 — Exportă ca 1C (TXT)
+
+Apasă butonul **Export 1C (TXT)**. Fișierul rezultat respectă formatul
+1CClientBankExchange versiunea 1.02, cu secțiuni `СекцияДокумент=Платежное
+поручение` pentru fiecare tranzacție și codificare **windows-1251** — exact
+ce așteaptă 1C la import.
+
+## Pasul 5 — Importă fișierul în 1C
+
+În 1C, deschide jurnalul documentelor bancare și folosește funcția
+**„Загрузить” / „Încarcă din fișier de schimb”**, apoi selectează fișierul
+TXT descărcat. Documentele de plată vor apărea automat, cu sumele și
+descrierile deja completate — rămâne doar să confirmi și să distribui pe
+conturi contabile.
+
+## De ce nu exportăm doar XLSX sau CSV?
+
+Le exportăm și pe acelea — de fapt, bank-converter oferă toate trei formate:
+**XLSX** (via exceljs, cu coloane formatate și sumele ca numere reale),
+**CSV** (cu BOM, ca Excel să recunoască automat diacriticele) și **1C TXT**.
+Diferența e că fișierul 1C e gata de import direct în programul de
+contabilitate, fără nicio conversie intermediară.
+
+## Limite și upgrade
+
+Planul gratuit include **2 extrase pe lună**. Dacă procesezi extrase pentru
+mai multe firme sau conturi, planul **Pro** elimină limita — vezi
+[prețurile](/price).
+
+---
+
+Vrei să încerci acum? [Convertește primul tău extras maib](/converter) —
+durează sub un minut.

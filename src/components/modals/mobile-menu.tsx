@@ -29,6 +29,9 @@ export function MobileMenu() {
 					<SheetTitle>{t('common.appName')}</SheetTitle>
 				</SheetHeader>
 				<nav className="grid gap-2 mt-6">
+					<Link href="/blog" className="text-lg py-2">
+						{t('nav.blog')}
+					</Link>
 					<Link href="/price" className="text-lg py-2">
 						{t('nav.pricing')}
 					</Link>

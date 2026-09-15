@@ -154,5 +154,12 @@
 		"title": "Extrase folosite luna aceasta",
 		"free": "{used} din {limit} extrase gratuite folosite",
 		"unlimited": "Plan Pro — extrase nelimitate"
+	},
+	"blog": {
+		"title": "Blog",
+		"subtitle": "Ghiduri despre extrase bancare, 1C și contabilitate",
+		"readMore": "Citește articolul",
+		"backToBlog": "Înapoi la blog",
+		"empty": "Nu există încă articole în această limbă"
 	}
 }
