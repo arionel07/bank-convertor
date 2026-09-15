@@ -10,23 +10,25 @@ import {
 import { Progress } from '@/components/ui/progress'
 import { subscriptions } from '@/db/schema'
 import { Link } from '@/i18n/navigation'
-import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { getSession } from '@/lib/session'
 import { FREE_MONTHLY_LIMIT, getMonthlyUsageCount, isProUser } from '@/lib/usage'
 import { eq } from 'drizzle-orm'
 import { getTranslations } from 'next-intl/server'
-import { headers } from 'next/headers'
 
 export default async function DashboardPage() {
-	const t = await getTranslations()
-	const session = await auth.api.getSession({ headers: await headers() })
-	const [sub] = await db
-		.select()
-		.from(subscriptions)
-		.where(eq(subscriptions.userId, session!.user.id))
-	const [pro, used] = await Promise.all([
-		isProUser(session!.user.id),
-		getMonthlyUsageCount(session!.user.id)
+	// getSession() is cache()-wrapped (src/lib/session.ts) — this is the
+	// same call the (app) layout already made for this request, deduped to
+	// one DB round-trip instead of two.
+	const [t, session] = await Promise.all([getTranslations(), getSession()])
+	const userId = session!.user.id
+
+	// All three independent of each other — fire together instead of
+	// waiting on the subscription query before starting the other two.
+	const [[sub], pro, used] = await Promise.all([
+		db.select().from(subscriptions).where(eq(subscriptions.userId, userId)),
+		isProUser(userId),
+		getMonthlyUsageCount(userId)
 	])
 
 	return (
