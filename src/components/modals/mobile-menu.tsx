@@ -2,6 +2,7 @@
 import { SignOutButton } from '@/components/buttons/sign-out-button'
 import { Button } from '@/components/ui/button'
 import { LinkButton } from '@/components/ui/link-button'
+import { LinkPendingHint } from '@/components/ui/link-pending-hint'
 import {
 	Sheet,
 	SheetContent,
@@ -32,17 +33,21 @@ export function MobileMenu({ isSignedIn }: { isSignedIn: boolean }) {
 				<nav className="grid gap-2 mt-6">
 					<Link href="/converter" className="text-lg py-2">
 						{t('nav.converter')}
+						<LinkPendingHint />
 					</Link>
 					<Link href="/blog" className="text-lg py-2">
 						{t('nav.blog')}
+						<LinkPendingHint />
 					</Link>
 					<Link href="/price" className="text-lg py-2">
 						{t('nav.pricing')}
+						<LinkPendingHint />
 					</Link>
 					{isSignedIn ? (
 						<>
 							<Link href={ROUTES.dashboard} className="text-lg py-2">
 								{t('nav.dashboard')}
+								<LinkPendingHint />
 							</Link>
 							<SignOutButton
 								compact={false}

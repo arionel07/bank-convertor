@@ -15,7 +15,9 @@
 		"converter": "Convertor",
 		"blog": "Blog",
 		"signOut": "Ieșire",
-		"signIn": "Intră în cont"
+		"signIn": "Intră în cont",
+		"privacy": "Confidențialitate",
+		"support": "Suport"
 	},
 	"auth": {
 		"login": {
@@ -51,12 +53,14 @@
 			"name": "Pro",
 			"f1": "Extrase nelimitate",
 			"f2": "Suport prioritar"
-		}
+		},
+		"discountBadge": "Reducere -20%"
 	},
 	"billing": {
 		"cancel": "Anulează abonamentul",
 		"cancelConfirm": "Anulezi abonamentul? Accesul rămâne activ până la sfârșitul perioadei plătite.",
-		"cancelled": "Abonament anulat"
+		"cancelled": "Abonament anulat",
+		"cancelledUntil": "Anulat — activ până pe {date}"
 	},
 	"theme": {
 		"toggle": "Temă",
@@ -122,7 +126,8 @@
 			"tooLarge": "Fișierul este prea mare (max 15 MB)",
 			"noTransactions": "Nu am găsit nicio tranzacție în acest fișier",
 			"generic": "Nu am putut procesa fișierul, încearcă din nou",
-			"limitReached": "Ai folosit extrasele gratuite din această lună"
+			"limitReached": "Ai folosit extrasele gratuite din această lună",
+			"rateLimited": "Prea multe cereri într-un timp scurt — mai încearcă puțin mai târziu."
 		},
 		"warning": {
 			"genericFallback": "Nu am recunoscut banca automat — am folosit extragerea generică. Verifică cu atenție sumele și descrierile înainte de export."
@@ -138,7 +143,9 @@
 			"actions": "Acțiuni",
 			"deleteRow": "Șterge rândul",
 			"addRow": "Adaugă rând",
-			"empty": "Niciun rând — adaugă unul manual sau încarcă alt extras"
+			"empty": "Niciun rând — adaugă unul manual sau încarcă alt extras",
+			"debit": "Debit",
+			"credit": "Credit"
 		},
 		"export": {
 			"xlsx": "Export XLSX",
@@ -155,6 +162,26 @@
 			"title": "Ai folosit conversia gratuită fără cont",
 			"subtitle": "Creează un cont gratuit pentru încă 2 extrase pe lună, sau treci direct la Pro pentru extrase nelimitate.",
 			"cta": "Creează cont gratuit"
+		},
+		"encoding": {
+			"win1251": "Windows-1251 (chirilic)",
+			"translit": "Transliterare (ASCII)"
+		},
+		"report": {
+			"trigger": "Fișier greșit? Raportează",
+			"title": "Raportează o problemă",
+			"subtitle": "Trimite-ne PDF-ul, ca să corectăm parserul. Nu îl folosim în alte scopuri decât depanare și se șterge automat în 24 de ore.",
+			"commentLabel": "Ce e greșit?",
+			"commentPlaceholder": "De ex.: suma de la rândul 3 e greșită, sau nu a găsit nicio tranzacție",
+			"emailLabel": "Email de contact (opțional)",
+			"emailPlaceholder": "tu@exemplu.com",
+			"privacyNote": "Fișierul e stocat temporar (max 24h) doar pentru a depana parserul, apoi e șters ireversibil. Detalii pe pagina de confidențialitate.",
+			"cancel": "Anulează",
+			"submit": "Trimite",
+			"success": "Trimis. Mulțumim — ne ajută să reparăm parserul.",
+			"error": "Nu am putut trimite raportul, încearcă din nou.",
+			"fileLabel": "Fișier PDF",
+			"filePlaceholder": "Alege un fișier PDF"
 		}
 	},
 	"usage": {
@@ -168,5 +195,29 @@
 		"readMore": "Citește articolul",
 		"backToBlog": "Înapoi la blog",
 		"empty": "Nu există încă articole în această limbă"
+	},
+	"privacy": {
+		"title": "Cum stocăm datele tale",
+		"subtitle": "O pagină scurtă și onestă despre ce se întâmplă cu extrasul tău bancar după ce îl încarci",
+		"section1": {
+			"title": "Procesarea extrasului la conversie",
+			"body": "Când încarci un PDF pentru conversie, fișierul este procesat exclusiv în memoria serverului, în cadrul aceleiași cereri. Nu salvăm PDF-ul, textul extras din el sau tranzacțiile recunoscute — nici în baza de date, nici pe disc. Imediat ce serverul îți trimite rezultatul, nu mai rămâne nimic din fișier."
+		},
+		"section2": {
+			"title": "Ce reținem totuși",
+			"body": "Pentru a calcula limita lunară a planului gratuit, salvăm doar o înregistrare tehnică: codul băncii și data — fără conținutul fișierului, fără sume și fără descrierile operațiunilor. Reținem și loguri tehnice de erori (mesajul erorii, fără datele extrasului) pentru depanarea serviciului."
+		},
+		"section3": {
+			"title": "Dacă ne trimiți tu însuți fișierul (butonul „Fișier greșit? Raportează”)",
+			"body": "Dacă apeși explicit „Raportează o problemă” și atașezi PDF-ul, acesta este stocat temporar — exclusiv pentru ca dezvoltatorul să vadă de ce a greșit parserul și să-l calibreze. Un astfel de fișier este șters automat și ireversibil în cel mult 24 de ore de la trimitere și nu este folosit în alte scopuri."
+		},
+		"section4": {
+			"title": "Cine are acces",
+			"body": "Accesul la fișierele trimise de tine îl are doar dezvoltatorul serviciului, și doar în fereastra de 24 de ore, cât fișierul nu a fost încă șters. Fișierul nu este transmis nimănui altcuiva și nu este folosit pentru a antrena servicii terțe."
+		},
+		"section5": {
+			"title": "Întrebări",
+			"body": "Dacă ai întrebări despre stocarea datelor, scrie-ne prin formularul „Raportează o problemă” de pe pagina convertorului."
+		}
 	}
 }

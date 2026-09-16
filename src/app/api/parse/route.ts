@@ -3,16 +3,42 @@ import {
 	markAnonymousConversionUsed
 } from '@/lib/anon-usage'
 import { auth } from '@/lib/auth'
+import { extractAccount } from '@/lib/parsers/account-header'
 import { findParserWithFallback } from '@/lib/parsers'
 import type { ParseApiResponse } from '@/lib/parsers/types'
 import { extractPdfText } from '@/lib/pdf/extract-text'
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
 import { canConvert, recordUsage } from '@/lib/usage'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 const MAX_SIZE = 15 * 1024 * 1024 // 15 MB
 
+// PDF parsing is CPU-heavy (pdfjs) — this caps rapid-fire retries/abuse
+// on top of the monthly usage limit above, which only counts *successful*
+// conversions and does nothing to stop a burst of requests before that
+// limit is hit. Same-IP visitors share a bucket, so a shared office/NAT
+// IP can legitimately bump into this under heavy use — that's an
+// accepted trade-off of IP-based limiting without an account system for
+// anonymous requests.
+const RATE_LIMIT = { limit: 10, windowMs: 60_000 }
+
 export async function POST(req: Request) {
+	const rateLimit = checkRateLimit(
+		`parse:${getClientIp(req)}`,
+		RATE_LIMIT.limit,
+		RATE_LIMIT.windowMs
+	)
+	if (!rateLimit.allowed) {
+		return NextResponse.json<ParseApiResponse>(
+			{ error: 'rate_limited' },
+			{
+				status: 429,
+				headers: { 'Retry-After': String(rateLimit.retryAfterSeconds) }
+			}
+		)
+	}
+
 	const session = await auth.api.getSession({ headers: await headers() })
 
 	// No file is ever stored server-side either way — extraction happens
@@ -73,7 +99,7 @@ export async function POST(req: Request) {
 	return NextResponse.json<ParseApiResponse>({
 		bankCode: parser.bankCode,
 		bankName: parser.bankName,
-		account: {},
+		account: extractAccount(text),
 		transactions,
 		...(isFallback ? { warning: 'generic_fallback' as const } : {})
 	})

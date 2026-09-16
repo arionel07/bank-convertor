@@ -8,14 +8,47 @@ function startOfMonth(date: Date): Date {
 	return new Date(date.getFullYear(), date.getMonth(), 1)
 }
 
+type SubscriptionAccessInfo = {
+	plan: string
+	status: string
+	endsAt: Date | null
+}
+
+/**
+ * A cancelled subscription still grants access until the paid period
+ * runs out — Lemon Squeezy flips status to 'cancelled' immediately on
+ * cancellation (not just at the actual period end), but endsAt is the
+ * date access should actually stop. Pulled out as a pure function
+ * (rather than inlined in isProUser) so it's testable without a DB.
+ *
+ * A user can have more than one row here (e.g. an old cancelled/expired
+ * subscription plus a newer one after resubscribing) — `subscriptionId`
+ * is unique per row, `userId` isn't — so this checks whether *any* row
+ * currently grants access, not just the first one a query happens to
+ * return.
+ */
+export function hasActiveProAccess(
+	subs: SubscriptionAccessInfo[],
+	now: Date = new Date()
+): boolean {
+	return subs.some(
+		sub =>
+			sub.plan === 'pro' &&
+			(sub.status === 'active' ||
+				(sub.status === 'cancelled' && sub.endsAt !== null && sub.endsAt > now))
+	)
+}
+
 export async function isProUser(userId: string): Promise<boolean> {
-	const [sub] = await db
-		.select({ plan: subscriptions.plan, status: subscriptions.status })
+	const subs = await db
+		.select({
+			plan: subscriptions.plan,
+			status: subscriptions.status,
+			endsAt: subscriptions.endsAt
+		})
 		.from(subscriptions)
-		.where(
-			and(eq(subscriptions.userId, userId), eq(subscriptions.status, 'active'))
-		)
-	return sub?.plan === 'pro'
+		.where(eq(subscriptions.userId, userId))
+	return hasActiveProAccess(subs)
 }
 
 export async function getMonthlyUsageCount(userId: string): Promise<number> {

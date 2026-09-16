@@ -5,6 +5,7 @@ const MAIB_TEXT = 'B.C. "Moldova Agroindbank" S.A.\n01.03.2026 Test 10,00 100,00
 
 const HEADER_BY_BANK_CODE: Record<string, string> = {
 	maib: 'B.C. "Moldova Agroindbank" S.A.',
+	'maib-card': 'MAIB S.A. Conturi de Card Denumirea Contra Părții',
 	victoriabank: 'Victoriabank',
 	moldindconbank: 'B.C. "Moldindconbank" S.A.',
 	sberbank: 'ПАО Сбербанк',
@@ -21,7 +22,16 @@ describe('findParser', () => {
 		expect(findParser('Some Unknown Bank Ltd. statement')).toBeNull()
 	})
 
-	it('routes every registered bank to itself, and to no one else', () => {
+	// maib-card's header text is a real card statement's own header, which
+	// always mentions "MAIB" too — maibParser's generic MAIB markers
+	// legitimately also match it. That overlap is resolved by PARSERS'
+	// order (maibCardParser listed first — see the comment there), not by
+	// mutual exclusivity, so it's the one documented exception below.
+	const KNOWN_OVERLAPS: Record<string, string[]> = {
+		'maib-card': ['maib']
+	}
+
+	it('routes every registered bank to itself, and to no one else (except documented overlaps)', () => {
 		expect(Object.keys(HEADER_BY_BANK_CODE).sort()).toEqual(
 			PARSERS.map(p => p.bankCode).sort()
 		)
@@ -32,6 +42,7 @@ describe('findParser', () => {
 
 			for (const other of PARSERS) {
 				if (other.bankCode === parser.bankCode) continue
+				if (KNOWN_OVERLAPS[parser.bankCode]?.includes(other.bankCode)) continue
 				expect(other.match(header)).toBe(false)
 			}
 		}

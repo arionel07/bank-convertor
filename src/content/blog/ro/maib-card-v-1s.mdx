@@ -1,0 +1,62 @@
+---
+title: "Extras de cont card maib în 1C: ghid pas cu pas"
+description: "Cum transformi un extras PDF de card maib (nu contul curent) într-un fișier 1CClientBankExchange gata de import în 1C."
+date: "2026-09-15"
+---
+
+Extrasul de card maib are alt format decât extrasul contului curent —
+descrierea tranzacției poate conține un text liber (de exemplu un transfer
+între subconturi), iar contrapartea (comerciantul) apare într-o coloană
+separată. Rezultatul: multe unelte generice de conversie confundă acel text
+cu suma reală, sau ignoră contrapartea. bank-converter recunoaște explicit
+acest format.
+
+## Ce îți trebuie
+
+- Extrasul contului de card maib în format PDF, descărcat din
+  **maibank** (aplicația mobilă) sau din varianta web
+- Un cont gratuit pe bank-converter, sau doar prima conversie fără cont
+- Acces la baza de date 1C în care ții evidența plăților
+
+## Pasul 1 — Descarcă extrasul de card din maibank
+
+Din **maibank** (sau din maib business, pentru carduri corporate), mergi la
+contul de card, alege perioada și descarcă extrasul de card în format
+**PDF**. Acesta e diferit de extrasul contului curent — atenție să nu
+descarci din secțiunea greșită.
+
+## Pasul 2 — Încarcă PDF-ul în bank-converter
+
+Intră în [convertor](/converter) și trage fișierul PDF în zona de încărcare.
+Aplicația recunoaște automat formatul de extras de card maib (diferit de
+extrasul operațional) și extrage data, comerciantul/contrapartea și suma
+fiecărei tranzacții — inclusiv achizițiile POS și restituirile.
+
+## Pasul 3 — Verifică și corectează tranzacțiile
+
+O particularitate a extrasului de card: descrierea unei operațiuni poate
+conține ea însăși o sumă (de exemplu un transfer intern între subconturi),
+diferită de suma reală debitată/creditată de pe card. bank-converter ia
+suma din coloanele corecte de Debit/Credit, nu din text — dar merită
+verificat tabelul de previzualizare înainte de export, ca la orice extras.
+
+## Pasul 4 — Exportă ca 1C (TXT)
+
+Apasă **Export 1C (TXT)**. Fișierul respectă formatul 1CClientBankExchange
+1.02, cu comerciantul completat ca beneficiar/plătitor (după direcție) și
+codificare **windows-1251**.
+
+## Pasul 5 — Importă fișierul în 1C
+
+În 1C, deschide jurnalul documentelor bancare, alege **„Загрузить” /
+„Încarcă din fișier de schimb”** și selectează fișierul TXT. Documentele
+apar automat, cu comerciantul și suma deja completate.
+
+## Limite și upgrade
+
+O conversie gratuită fără cont, apoi **2 extrase pe lună** cu cont gratuit.
+Pentru volum mai mare, vezi planul [Pro](/price).
+
+---
+
+[Convertește un extras de card maib](/converter) — durează sub un minut.

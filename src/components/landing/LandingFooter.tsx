@@ -1,3 +1,5 @@
+import { ReportIssueDialog } from '@/components/converter/report-issue-dialog'
+import { LinkPendingHint } from '@/components/ui/link-pending-hint'
 import { Link } from '@/i18n/navigation'
 import { getTranslations } from 'next-intl/server'
 
@@ -12,12 +14,33 @@ export async function LandingFooter() {
 						className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
 					>
 						{t('nav.pricing')}
+						<LinkPendingHint />
 					</Link>
+					<Link
+						href="/privacy"
+						className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+					>
+						{t('nav.privacy')}
+						<LinkPendingHint />
+					</Link>
+					<ReportIssueDialog
+						file={null}
+						bankCode={null}
+						trigger={
+							<button
+								type="button"
+								className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+							>
+								{t('nav.support')}
+							</button>
+						}
+					/>
 					<Link
 						href="/login"
 						className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
 					>
 						{t('nav.signIn')}
+						<LinkPendingHint />
 					</Link>
 				</nav>
 				<p className="text-xs text-muted-foreground">

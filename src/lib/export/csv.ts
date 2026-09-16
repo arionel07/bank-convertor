@@ -6,6 +6,11 @@ function escapeCsvField(value: string): string {
 	return value
 }
 
+/**
+ * `headers` order: [date, description, debit, credit, currency, balance]
+ * — see xlsx.ts's comment on why debit/credit are split into separate
+ * columns instead of one signed amount.
+ */
 export function transactionsToCsv(
 	transactions: Transaction[],
 	headers: string[]
@@ -13,7 +18,8 @@ export function transactionsToCsv(
 	const rows = transactions.map(t => [
 		t.date,
 		t.description,
-		t.amount.toFixed(2),
+		t.amount < 0 ? Math.abs(t.amount).toFixed(2) : '',
+		t.amount >= 0 ? t.amount.toFixed(2) : '',
 		t.currency,
 		t.balance !== undefined ? t.balance.toFixed(2) : ''
 	])

@@ -30,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			alternates: { languages: localeAlternates('/price') }
 		})
 		entries.push({
+			url: localizedUrl(locale, '/privacy'),
+			changeFrequency: 'yearly',
+			priority: 0.3,
+			alternates: { languages: localeAlternates('/privacy') }
+		})
+		entries.push({
 			url: localizedUrl(locale, '/blog'),
 			changeFrequency: 'weekly',
 			priority: 0.6,

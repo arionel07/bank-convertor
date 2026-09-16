@@ -9,7 +9,15 @@ export function ThemeToggle() {
 	const t = useTranslations('theme')
 	const { resolvedTheme, setTheme } = useTheme()
 	const [mounted, setMounted] = useState(false)
-	useEffect(() => setMounted(true), []) // гидрация: до маунта не рендерим иконку
+	// This is next-themes' own documented hydration-safety pattern (the
+	// server can't know the client's actual theme, so nothing theme-
+	// dependent may render before the first client commit) — the
+	// react-hooks/set-state-in-effect rule flags any setState-in-effect
+	// as a risk of cascading renders, but this one has an empty
+	// dependency array and runs exactly once per mount, so there's
+	// nothing to cascade.
+	// eslint-disable-next-line react-hooks/set-state-in-effect
+	useEffect(() => setMounted(true), [])
 
 	return (
 		<Button

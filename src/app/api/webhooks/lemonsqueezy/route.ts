@@ -50,10 +50,20 @@ export async function POST(req: Request) {
 		}
 
 		if (name === 'subscription_cancelled' || name === 'subscription_expired') {
+			// ends_at/renews_at are on this event's payload too (Lemon
+			// Squeezy sets ends_at the moment a cancellation is scheduled,
+			// well before the subscription actually expires) — carrying
+			// them over here as well, not just on created/updated, covers
+			// a cancellation started from Lemon Squeezy's own customer
+			// portal rather than our /api/billing/cancel button, which
+			// already sets them itself. See hasActiveProAccess in
+			// src/lib/usage.ts for why endsAt matters beyond just status.
 			await db
 				.update(subscriptions)
 				.set({
-					status: name === 'subscription_cancelled' ? 'cancelled' : 'expired'
+					status: name === 'subscription_cancelled' ? 'cancelled' : 'expired',
+					renewsAt: attrs.renews_at ? new Date(attrs.renews_at) : null,
+					endsAt: attrs.ends_at ? new Date(attrs.ends_at) : null
 				})
 				.where(eq(subscriptions.subscriptionId, String(event.data.id)))
 		}

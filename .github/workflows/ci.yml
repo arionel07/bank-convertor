@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.14'
+
+      - run: bun install --frozen-lockfile
+
+      - run: bunx tsc --noEmit
+
+      - run: bun run lint
+
+      - run: bun run test
+
+      # Build only ever imports src/lib/db.ts and src/lib/auth.ts at module
+      # load time — postgres.js and better-auth don't eagerly connect, so
+      # a syntactically-valid but fake DATABASE_URL is enough; no real
+      # database or GitHub secrets needed to keep this build green.
+      - run: bun run build
+        env:
+          DATABASE_URL: 'postgresql://ci:ci@localhost:5432/ci'
+          BETTER_AUTH_URL: 'http://localhost:3000'
+          BETTER_AUTH_SECRET: 'ci-only-dummy-secret-not-used-for-anything-real'
+          NEXT_PUBLIC_APP_URL: 'http://localhost:3000'
+          GOOGLE_CLIENT_ID: 'ci-dummy'
+          GOOGLE_CLIENT_SECRET: 'ci-dummy'
+          RESEND_API_KEY: 'ci-dummy'
+          EMAIL_FROM: 'ci@example.com'
+          FEEDBACK_NOTIFY_EMAIL: 'ci@example.com'
+          LEMONSQUEEZY_API_KEY: 'ci-dummy'
+          LEMONSQUEEZY_STORE_ID: 'ci-dummy'
+          LEMONSQUEEZY_PRO_VARIANT_ID: 'ci-dummy'
+          LEMONSQUEEZY_WEBHOOK_SECRET: 'ci-dummy'
+          CRON_SECRET: 'ci-dummy'

@@ -2,6 +2,7 @@ import { LanguageSwitcher } from '@/components/buttons/language-switcher'
 import { SignOutButton } from '@/components/buttons/sign-out-button'
 import { ThemeToggle } from '@/components/buttons/theme-toggle'
 import { LinkButton } from '@/components/ui/link-button'
+import { LinkPendingHint } from '@/components/ui/link-pending-hint'
 import { Link, redirect } from '@/i18n/navigation'
 import { ROUTES } from '@/lib/routes'
 import { getSession } from '@/lib/session'
@@ -27,6 +28,7 @@ export default async function AppLayout({
 				<div className="flex h-14 items-center gap-2 px-4">
 					<Link href={ROUTES.afterLogin} className="font-semibold text-lg">
 						{t('common.appName')}
+						<LinkPendingHint />
 					</Link>
 					<nav className="ml-auto flex items-center gap-1">
 						<LinkButton

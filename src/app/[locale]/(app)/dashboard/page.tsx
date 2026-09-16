@@ -14,22 +14,39 @@ import { db } from '@/lib/db'
 import { getSession } from '@/lib/session'
 import { FREE_MONTHLY_LIMIT, getMonthlyUsageCount, isProUser } from '@/lib/usage'
 import { eq } from 'drizzle-orm'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function DashboardPage() {
 	// getSession() is cache()-wrapped (src/lib/session.ts) — this is the
 	// same call the (app) layout already made for this request, deduped to
 	// one DB round-trip instead of two.
-	const [t, session] = await Promise.all([getTranslations(), getSession()])
+	const [t, locale, session] = await Promise.all([
+		getTranslations(),
+		getLocale(),
+		getSession()
+	])
 	const userId = session!.user.id
 
 	// All three independent of each other — fire together instead of
 	// waiting on the subscription query before starting the other two.
-	const [[sub], pro, used] = await Promise.all([
+	const [subs, pro, used] = await Promise.all([
 		db.select().from(subscriptions).where(eq(subscriptions.userId, userId)),
 		isProUser(userId),
 		getMonthlyUsageCount(userId)
 	])
+
+	// The row (if any) currently granting access — same rule as
+	// hasActiveProAccess in src/lib/usage.ts: active, or cancelled but
+	// still inside the paid-for period. Shown for its own info (plan
+	// name, whether it's already cancelled) — `pro` above is what
+	// actually gates the usage card.
+	const now = new Date()
+	const currentSub = subs.find(
+		s =>
+			s.plan === 'pro' &&
+			(s.status === 'active' ||
+				(s.status === 'cancelled' && s.endsAt !== null && s.endsAt > now))
+	)
 
 	return (
 		<div className="grid gap-4 max-w-2xl mx-auto">
@@ -67,12 +84,20 @@ export default async function DashboardPage() {
 					<CardTitle>{t('price.title')}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					{sub && sub.status === 'active' ? (
+					{currentSub ? (
 						<div className="grid gap-4">
 							<p className="text-sm text-muted-foreground capitalize">
-								{sub.plan}
+								{currentSub.plan}
 							</p>
-							<CancelSubscriptionButton />
+							{currentSub.status === 'cancelled' && currentSub.endsAt ? (
+								<p className="text-sm text-amber-600 dark:text-amber-400">
+									{t('billing.cancelledUntil', {
+										date: currentSub.endsAt.toLocaleDateString(locale)
+									})}
+								</p>
+							) : (
+								<CancelSubscriptionButton />
+							)}
 						</div>
 					) : (
 						<Button

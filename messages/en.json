@@ -15,7 +15,9 @@
 		"converter": "Converter",
 		"blog": "Blog",
 		"signOut": "Sign out",
-		"signIn": "Sign in"
+		"signIn": "Sign in",
+		"privacy": "Privacy",
+		"support": "Support"
 	},
 	"auth": {
 		"login": {
@@ -51,12 +53,14 @@
 			"name": "Pro",
 			"f1": "Unlimited statements",
 			"f2": "Priority support"
-		}
+		},
+		"discountBadge": "-20% off"
 	},
 	"billing": {
 		"cancel": "Cancel subscription",
 		"cancelConfirm": "Cancel subscription? Access remains until the end of the paid period.",
-		"cancelled": "Subscription cancelled"
+		"cancelled": "Subscription cancelled",
+		"cancelledUntil": "Cancelled — active until {date}"
 	},
 	"theme": {
 		"toggle": "Theme",
@@ -122,7 +126,8 @@
 			"tooLarge": "File is too large (max 15 MB)",
 			"noTransactions": "We couldn't find any transactions in this file",
 			"generic": "We couldn't process the file, please try again",
-			"limitReached": "You've used your free statements for this month"
+			"limitReached": "You've used your free statements for this month",
+			"rateLimited": "Too many requests in a short time — try again in a bit."
 		},
 		"detectedBank": "Detected bank: {bank}",
 		"transactionsFound": "{count} transactions found",
@@ -135,7 +140,9 @@
 			"actions": "Actions",
 			"deleteRow": "Delete row",
 			"addRow": "Add row",
-			"empty": "No rows — add one manually or upload another statement"
+			"empty": "No rows — add one manually or upload another statement",
+			"debit": "Debit",
+			"credit": "Credit"
 		},
 		"export": {
 			"xlsx": "Export XLSX",
@@ -155,6 +162,26 @@
 			"title": "You've used your free no-account conversion",
 			"subtitle": "Create a free account for 2 more statements per month, or go straight to Pro for unlimited statements.",
 			"cta": "Create a free account"
+		},
+		"encoding": {
+			"win1251": "Windows-1251 (Cyrillic)",
+			"translit": "Transliteration (ASCII)"
+		},
+		"report": {
+			"trigger": "File wrong? Report it",
+			"title": "Report a problem",
+			"subtitle": "Send us the PDF so we can fix the parser. Used only for debugging and auto-deleted within 24 hours.",
+			"commentLabel": "What went wrong?",
+			"commentPlaceholder": "e.g.: the amount on row 3 is wrong, or no transactions were found at all",
+			"emailLabel": "Contact email (optional)",
+			"emailPlaceholder": "you@example.com",
+			"privacyNote": "The file is stored temporarily (max 24h) only to debug the parser, then permanently deleted. See the privacy page for details.",
+			"cancel": "Cancel",
+			"submit": "Send",
+			"success": "Sent — thanks, this helps us fix the parser.",
+			"error": "Could not send the report, try again.",
+			"fileLabel": "PDF file",
+			"filePlaceholder": "Choose a PDF file"
 		}
 	},
 	"usage": {
@@ -168,5 +195,29 @@
 		"readMore": "Read the article",
 		"backToBlog": "Back to blog",
 		"empty": "No articles in this language yet"
+	},
+	"privacy": {
+		"title": "How we handle your data",
+		"subtitle": "A short, honest page about what happens to your bank statement after you upload it",
+		"section1": {
+			"title": "Processing your statement during conversion",
+			"body": "When you upload a PDF to convert, it is processed entirely in the server's memory, for the duration of that one request. We never save the PDF itself, the text extracted from it, or the recognized transactions — not to a database, not to disk. As soon as the server sends you the result, nothing of the file remains."
+		},
+		"section2": {
+			"title": "What we do keep",
+			"body": "To count your free plan's monthly limit, we keep only a technical record: the bank code and the date — no file content, no amounts, no transaction descriptions. We also keep technical error logs (the error message, without any statement data) to debug the service."
+		},
+		"section3": {
+			"title": "If you send us the file yourself (the \"File wrong? Report it\" button)",
+			"body": "If you explicitly click \"Report a problem\" and attach a PDF, that file is stored temporarily — solely so the developer can see why the parser got it wrong and calibrate it. Such a file is automatically and permanently deleted within 24 hours of submission at the latest, and is never used for any other purpose."
+		},
+		"section4": {
+			"title": "Who has access",
+			"body": "Only the developer of the service has access to files you send in, and only during the 24-hour window before the file is deleted. The file is never shared with anyone else and never used to train third-party services."
+		},
+		"section5": {
+			"title": "Questions",
+			"body": "If you have questions about data storage, reach us through the \"Report a problem\" form on the converter page."
+		}
 	}
 }

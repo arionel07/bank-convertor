@@ -1,12 +1,20 @@
 'use client'
 import { Dropzone } from '@/components/converter/dropzone'
+import { ReportIssueDialog } from '@/components/converter/report-issue-dialog'
 import { TransactionsTable } from '@/components/converter/transactions-table'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from '@/components/ui/select'
 import { Spinner } from '@/components/ui/spinner'
 import { Link } from '@/i18n/navigation'
 import { downloadCsv } from '@/lib/export/csv'
-import { download1C } from '@/lib/export/onec'
+import { download1C, type OneCEncoding } from '@/lib/export/onec'
 import { downloadXlsx } from '@/lib/export/xlsx'
 import type {
 	ParseApiError,
@@ -14,7 +22,7 @@ import type {
 	ParsedAccount,
 	Transaction
 } from '@/lib/parsers/types'
-import { FileWarning, RotateCcw, TriangleAlert } from 'lucide-react'
+import { FileWarning, Flag, RotateCcw, TriangleAlert } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -28,17 +36,27 @@ const ERROR_MESSAGE_KEY: Record<ParseApiError, string> = {
 	no_transactions: 'noTransactions',
 	not_implemented: 'generic',
 	limit_reached: 'limitReached',
-	anon_limit_reached: 'limitReached'
+	anon_limit_reached: 'limitReached',
+	rate_limited: 'rateLimited'
 }
+
+// Errors worth offering "report this file" for — i.e. ones that mean the
+// parser itself failed on a legitimate PDF, as opposed to the user's own
+// file (wrong type / too big) or their plan limit.
+const PARSER_QUALITY_ERRORS: ParseApiError[] = ['no_transactions', 'not_implemented']
 
 export function ConverterClient() {
 	const t = useTranslations('converter')
 	const [status, setStatus] = useState<Status>('idle')
 	const [error, setError] = useState<ParseApiError | null>(null)
+	const [uploadedFile, setUploadedFile] = useState<File | null>(null)
 	const [bankName, setBankName] = useState<string | null>(null)
+	const [bankCode, setBankCode] = useState<string | null>(null)
 	const [account, setAccount] = useState<ParsedAccount>({})
 	const [transactions, setTransactions] = useState<Transaction[]>([])
 	const [fallbackWarning, setFallbackWarning] = useState(false)
+	const [oneCEncoding, setOneCEncoding] = useState<OneCEncoding>('win1251')
+	const [exporting, setExporting] = useState<'xlsx' | 'csv' | 'onec' | null>(null)
 
 	async function handleFile(file: File) {
 		if (file.type !== 'application/pdf') {
@@ -49,6 +67,7 @@ export function ConverterClient() {
 
 		setStatus('uploading')
 		setError(null)
+		setUploadedFile(file)
 
 		try {
 			const formData = new FormData()
@@ -63,6 +82,7 @@ export function ConverterClient() {
 			}
 
 			setBankName(data.bankName)
+			setBankCode(data.bankCode)
 			setAccount(data.account)
 			setTransactions(data.transactions)
 			setFallbackWarning(data.warning === 'generic_fallback')
@@ -76,25 +96,36 @@ export function ConverterClient() {
 	function reset() {
 		setStatus('idle')
 		setError(null)
+		setUploadedFile(null)
 		setBankName(null)
+		setBankCode(null)
 		setAccount({})
 		setTransactions([])
 		setFallbackWarning(false)
 	}
 
-	const headers = [
+	// Order matches the XLSX/CSV export columns — see the comment on
+	// transactionsToXlsxBuffer in @/lib/export/xlsx.ts.
+	const exportHeaders = [
 		t('table.date'),
 		t('table.description'),
-		t('table.amount'),
+		t('table.debit'),
+		t('table.credit'),
 		t('table.currency'),
 		t('table.balance')
 	]
 
-	async function withErrorToast(action: () => Promise<void> | void) {
+	async function runExport(
+		format: 'xlsx' | 'csv' | 'onec',
+		action: () => Promise<void> | void
+	) {
+		setExporting(format)
 		try {
 			await action()
 		} catch {
 			toast.error(t('error.generic'))
+		} finally {
+			setExporting(null)
 		}
 	}
 
@@ -168,7 +199,23 @@ export function ConverterClient() {
 					className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
 				>
 					<TriangleAlert size={18} className="shrink-0 mt-0.5" />
-					{t(`error.${ERROR_MESSAGE_KEY[error]}`)}
+					<span className="flex-1">{t(`error.${ERROR_MESSAGE_KEY[error]}`)}</span>
+					{PARSER_QUALITY_ERRORS.includes(error) && uploadedFile && (
+						<ReportIssueDialog
+							file={uploadedFile}
+							bankCode={null}
+							trigger={
+								<Button
+									variant="outline"
+									size="sm"
+									className="shrink-0 gap-1.5 border-destructive/30 text-destructive hover:bg-destructive/10"
+								>
+									<Flag size={14} />
+									{t('report.trigger')}
+								</Button>
+							}
+						/>
+					)}
 				</div>
 			)}
 
@@ -179,10 +226,22 @@ export function ConverterClient() {
 							{bankName && t('detectedBank', { bank: bankName })} ·{' '}
 							{t('transactionsFound', { count: transactions.length })}
 						</p>
-						<Button variant="ghost" size="sm" onClick={reset} className="gap-1.5">
-							<RotateCcw size={14} />
-							{t('reset')}
-						</Button>
+						<div className="flex items-center gap-2">
+							<ReportIssueDialog
+								file={uploadedFile}
+								bankCode={bankCode}
+								trigger={
+									<Button variant="ghost" size="sm" className="gap-1.5">
+										<Flag size={14} />
+										{t('report.trigger')}
+									</Button>
+								}
+							/>
+							<Button variant="ghost" size="sm" onClick={reset} className="gap-1.5">
+								<RotateCcw size={14} />
+								{t('reset')}
+							</Button>
+						</div>
 					</div>
 
 					{fallbackWarning && (
@@ -208,35 +267,62 @@ export function ConverterClient() {
 						<Button
 							variant="outline"
 							className="h-11"
+							disabled={exporting !== null}
 							onClick={() =>
-								withErrorToast(() =>
-									downloadXlsx(transactions, headers, 'statement.xlsx')
+								runExport('xlsx', () =>
+									downloadXlsx(transactions, exportHeaders, 'statement.xlsx')
 								)
 							}
 						>
+							{exporting === 'xlsx' && <Spinner />}
 							{t('export.xlsx')}
 						</Button>
 						<Button
 							variant="outline"
 							className="h-11"
+							disabled={exporting !== null}
 							onClick={() =>
-								withErrorToast(() =>
-									downloadCsv(transactions, headers, 'statement.csv')
+								runExport('csv', () =>
+									downloadCsv(transactions, exportHeaders, 'statement.csv')
 								)
 							}
 						>
+							{exporting === 'csv' && <Spinner />}
 							{t('export.csv')}
 						</Button>
 						<Button
 							className="h-11"
+							disabled={exporting !== null}
 							onClick={() =>
-								withErrorToast(() =>
-									download1C(transactions, account, 'statement_1c.txt')
+								runExport('onec', () =>
+									download1C(
+										transactions,
+										account,
+										'statement_1c.txt',
+										oneCEncoding
+									)
 								)
 							}
 						>
+							{exporting === 'onec' && <Spinner />}
 							{t('export.onec')}
 						</Button>
+						<Select
+							value={oneCEncoding}
+							onValueChange={value => setOneCEncoding(value as OneCEncoding)}
+						>
+							<SelectTrigger className="h-11 w-full sm:w-auto">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="win1251">
+									{t('encoding.win1251')}
+								</SelectItem>
+								<SelectItem value="translit">
+									{t('encoding.translit')}
+								</SelectItem>
+							</SelectContent>
+						</Select>
 					</div>
 				</div>
 			)}

@@ -75,3 +75,24 @@ export const usage = pgTable('usage', {
 	bankCode: text('bank_code').notNull(),
 	createdAt: timestamp('created_at').notNull().defaultNow()
 })
+
+// "Файл не распознался" — юзер сам присылает нам проблемный PDF для
+// калибровки парсеров. Это единственное место во всём приложении, где
+// содержимое выписки временно оседает на сервере (обычная конвертация в
+// src/app/api/parse/route.ts обрабатывает файл только в памяти и никогда
+// его не сохраняет) — см. src/lib/feedback.ts и /api/cron/purge-feedback,
+// который безвозвратно удаляет строки старше FEEDBACK_RETENTION_HOURS.
+// fileBase64 — не bytea: в drizzle-orm/pg-core нет готового bytea-типа
+// (PgBinaryVector — это pgvector, не общий бинарник), а заводить свой
+// customType под один текстовый столбец избыточно для этого объёма.
+export const parserFeedback = pgTable('parser_feedback', {
+	id: uuid('id').primaryKey().defaultRandom(),
+	userId: text('user_id'),
+	bankCode: text('bank_code'),
+	comment: text('comment').notNull(),
+	contactEmail: text('contact_email'),
+	fileName: text('file_name').notNull(),
+	fileBase64: text('file_base64').notNull(),
+	downloadToken: text('download_token').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow()
+})

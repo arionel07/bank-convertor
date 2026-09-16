@@ -1,5 +1,7 @@
+import { CheckoutButton } from '@/components/buttons/checkout-button'
 import { LandingFooter } from '@/components/landing/LandingFooter'
 import { LandingHeader } from '@/components/landing/LandingHeader'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -9,6 +11,7 @@ import {
 	CardHeader,
 	CardTitle
 } from '@/components/ui/card'
+import { LinkPendingHint } from '@/components/ui/link-pending-hint'
 import { Link } from '@/i18n/navigation'
 import type { AppLocale } from '@/i18n/routing'
 import { pageMetadata } from '@/lib/seo'
@@ -41,13 +44,20 @@ export default async function PricePage() {
 		{
 			name: t('price.free.name'),
 			price: '$0',
+			originalPrice: null as string | null,
 			features: [t('price.free.f1'), t('price.free.f2')],
 			href: '/register',
 			external: false
 		},
 		{
 			name: t('price.pro.name'),
-			price: '$9',
+			price: '$8',
+			// Display only — the actual charge comes from the Lemon Squeezy
+			// variant behind LEMONSQUEEZY_PRO_VARIANT_ID, configured on
+			// Lemon Squeezy's own dashboard, not here. Keep that variant's
+			// price in sync with this string, or checkout will charge a
+			// different amount than what's shown.
+			originalPrice: '$10' as string | null,
 			features: [t('price.pro.f1'), t('price.pro.f2')],
 			// route handler, not a localized page — must not go through the
 			// locale-prefixing <Link>; carries the locale so an unauthenticated
@@ -72,8 +82,20 @@ export default async function PricePage() {
 					{plans.map(plan => (
 						<Card key={plan.name} className="shadow-lg">
 							<CardHeader>
-								<CardTitle>{plan.name}</CardTitle>
+								<div className="flex items-center gap-2">
+									<CardTitle>{plan.name}</CardTitle>
+									{plan.originalPrice && (
+										<Badge className="bg-primary/10 text-primary">
+											{t('price.discountBadge')}
+										</Badge>
+									)}
+								</div>
 								<CardDescription className="text-3xl font-bold text-foreground">
+									{plan.originalPrice && (
+										<span className="text-lg font-normal text-muted-foreground line-through mr-1.5">
+											{plan.originalPrice}
+										</span>
+									)}
 									{plan.price}
 									<span className="text-sm font-normal text-muted-foreground">
 										{t('price.perMonth')}
@@ -92,13 +114,9 @@ export default async function PricePage() {
 							</CardContent>
 							<CardFooter>
 								{plan.external ? (
-									<Button
-										nativeButton={false}
-										render={<a href={plan.href} />}
-										className="w-full h-11"
-									>
+									<CheckoutButton href={plan.href}>
 										{t('price.choose')}
-									</Button>
+									</CheckoutButton>
 								) : (
 									<Button
 										nativeButton={false}
@@ -106,6 +124,7 @@ export default async function PricePage() {
 										className="w-full h-11"
 									>
 										{t('price.choose')}
+										<LinkPendingHint />
 									</Button>
 								)}
 							</CardFooter>

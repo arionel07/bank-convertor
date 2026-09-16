@@ -1,4 +1,5 @@
 import { emailOutbox } from '@/db/schema'
+import { ParserFeedbackEmail } from '@/emails/parser-feedback'
 import { WelcomeEmail } from '@/emails/welcome'
 import { captureError } from '@/lib/capture-error'
 import { db } from '@/lib/db'
@@ -16,6 +17,17 @@ const TEMPLATES = {
 	welcome: {
 		subject: 'Добро пожаловать',
 		render: (p: { name: string }) => render(WelcomeEmail(p))
+	},
+	parserFeedback: {
+		subject: 'Файл не распознался — новый отзыв',
+		render: (p: {
+			bankCode: string | null
+			comment: string
+			contactEmail: string | null
+			fileName: string
+			downloadUrl: string
+			expiresInHours: number
+		}) => render(ParserFeedbackEmail(p))
 	}
 } as const
 

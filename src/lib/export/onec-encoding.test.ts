@@ -42,4 +42,29 @@ describe('encode1CBytes', () => {
 			.join('')
 		expect(asciiPrefix).toBe('1CClientBankExchange')
 	})
+
+	it('REGRESSION: Romanian-diacritic values auto-transliterate to ASCII, Cyrillic protocol keys stay intact, and the result is valid win1251 (not "?????")', () => {
+		const text = [
+			'1CClientBankExchange',
+			'ВерсияФормата=1.02',
+			'СекцияДокумент=Платежное поручение',
+			'НазначениеПлатежа=Plată întreținere bloc, SRL Exemplu',
+			'КонецДокумента',
+			'КонецФайла'
+		].join('\r\n')
+
+		const bytes = encode1CBytes(text)
+		const decoded = iconv.decode(Buffer.from(bytes), 'win1251')
+
+		// no '?' anywhere — a windows-1250 encode of this same text would
+		// have turned the Cyrillic keys into exactly that
+		expect(decoded).not.toContain('?')
+		// protocol keys survive verbatim
+		expect(decoded).toContain('СекцияДокумент=Платежное поручение')
+		expect(decoded).toContain('НазначениеПлатежа=')
+		// the diacritic value is transliterated, not dropped or corrupted
+		expect(decoded).toContain(
+			'НазначениеПлатежа=Plata intretinere bloc, SRL Exemplu'
+		)
+	})
 })

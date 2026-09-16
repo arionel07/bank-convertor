@@ -50,3 +50,5 @@ export type ParseApiError =
 	| 'limit_reached'
 	/** Anonymous visitor already used their one no-account conversion. */
 	| 'anon_limit_reached'
+	/** Too many requests from this IP in a short window — see src/lib/rate-limit.ts. */
+	| 'rate_limited'

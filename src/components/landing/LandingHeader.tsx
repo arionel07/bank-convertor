@@ -3,6 +3,7 @@ import { SignOutButton } from '@/components/buttons/sign-out-button'
 import { ThemeToggle } from '@/components/buttons/theme-toggle'
 import { MobileMenu } from '@/components/modals/mobile-menu'
 import { LinkButton } from '@/components/ui/link-button'
+import { LinkPendingHint } from '@/components/ui/link-pending-hint'
 import { Link } from '@/i18n/navigation'
 import { ROUTES } from '@/lib/routes'
 import { hasSessionCookie } from '@/lib/session'
@@ -28,6 +29,7 @@ export async function LandingHeader() {
 				<div className="flex-1 flex items-center">
 					<Link href="/" className="font-semibold text-lg whitespace-nowrap">
 						{t('common.appName')}
+						<LinkPendingHint />
 					</Link>
 				</div>
 
